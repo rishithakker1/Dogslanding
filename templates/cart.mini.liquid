@@ -1,0 +1,295 @@
+{% layout none %}
+
+<template data-options>
+  {}
+</template>
+
+<template data-html="header">
+  {{ 'layout.mini_cart.heading' | t }}
+  {% if cart.item_count > 0 %}
+  <div class="cart-shipping__wrapper">
+      <p class="cart-shipping__numOuter">You're $<span class="cart-shipping__num"></span> away from free shipping!</p>
+      <p class="cart-shipping__success" style="display: none;">You're eligible for Free Shipping!</p>
+      <div class="cart-shippingThreshold__bar">
+        <span class="cart-shippingThreshold__progress"></span>
+      </div>
+    </div>
+  {% endif %}
+</template>
+
+<template data-html="content">
+  <div class="cart-mini-content cart-mini-items" data-cart-mini-content>
+    {% if cart.item_count > 0 %}
+    
+
+    <div class="cart-countdown">
+      <img src="{{ 'clock.png' | asset_img_url: 'master' }}">
+      <span id="cart-clock-text" class="ff__thic-bold">Hurry! Your cart is saved for the next</span>
+      <span id="cart-clock" class="ff__thic-black accent__blue" data-cart-clock>05m 00s</span>
+    </div>
+    
+      {% for item in cart.items %}
+        {%- assign item_has_discounts = false -%}
+        {%- if item.line_level_discount_allocations.size > 0 -%}
+          {%- assign item_has_discounts = true -%}
+        {%- endif -%}
+    
+        <div
+          class="cart-mini-item"
+          data-cart-mini-item="{{ item.id }}"
+        >  
+          <div class="cart-mini-item-row">
+            <div
+              class="
+                cart-mini-item-column
+                cart-mini-item-column-image
+              "
+            >
+              <figure class="cart-mini-item-image">
+                {%
+                  render 'rimg'
+                  img: item.image,
+                  alt: item.image.alt,
+                  size: '100x',
+                  lazy: false
+                %}
+              </figure>
+            </div>
+
+            <div
+              class="
+                cart-mini-item-column
+                cart-mini-item-column-details
+              "
+            >
+              {% if settings.show-brand-names %}<span class="cart-mini-item-vendor">{{ item.vendor }}</span>{% endif %}
+
+              <span class="cart-mini-item-title ff__thic-extra-bold">
+                <a href="{{ item.product.url }}">
+                  {{ item.product.title }}
+                </a>
+              </span>
+              
+              {% comment %}
+              <div class="cart-mini-item-remove"
+                   aria-label="remove"
+                   role="button"
+                   data-cart-mini-item-remove="{{ item.key }}"
+                   >
+                {{ 'layout.mini_cart.remove_item' | t }}
+              </div>
+              {% endcomment %}
+              
+              <img class="cart-mini-item-remove"
+                   src="{{ 'delete_btn.png' | asset_img_url: "master" }}" style="max-width: 15px;"
+                   aria-label="remove"
+                   role="button"
+                   data-cart-mini-item-remove="{{ item.key }}"
+                   >
+
+              {% unless item.product.has_only_default_variant %}
+                <span class="cart-mini-item-variant ff__thic-regular">{{ item.variant.title }}</span>
+              {% endunless %}
+
+              {% if item.selling_plan_allocation.selling_plan %}
+                <span class="cart-mini-item-selling-plan">{{ item.selling_plan_allocation.selling_plan.name }}</span>
+              {% endif %}
+
+              {% comment %}
+              <span class="cart-mini-item-quantity ff__thic-regular">{{ 'layout.mini_cart.quantity_item' | t: qty: item.quantity }}</span>
+              {% endcomment %}
+              
+              <div class="cart-mini__price-quantity-container">
+              
+              <div class="cart-mini__prices-wrap ff__thic-bold">
+                {% if item.variant.compare_at_price > item.variant.price %}
+                  <span class="original">{{ item.variant.compare_at_price | money }}</span>
+                  <span class="cart-mini-item-final-price money--last">{{ item.variant.price | money }}</span><br>
+                  <span class="cart-mini-item-save accent__red">{{ item.variant.compare_at_price | minus: item.variant.price | times: 100.0 | divided_by: item.variant.compare_at_price | times: 100 | divided_by: 100 | floor }}% Off</span>
+                  <span class="cart-mini__you-save">(You save {{ item.variant.compare_at_price | minus: item.variant.price | money }})</span>
+                {% else %}
+                	<span class="cart-mini-item-final-price cart-mini-item-final-price">{{ item.variant.price | money }}</span>
+                {% endif %}
+              </div>
+
+              <div class="mini-cart__quantity-wrap ff__thic-bold">
+                <div class="cart_mini__qty decrease" onclick="Shopify.changeItem({{ item.variant.id }}, {{ item.quantity | minus: 1 }})">-</div>
+                <input id="updates_{{ item.key }}" 
+                       class="mini_cart__qty-input" 
+                       type="number"
+                       name="updates[]" 
+                       value="1" 
+                       min="1" 
+                       pattern="[0-9]*"
+                       style="display:none;">
+                <div class="mini_cart_item-final__quantity">{{ item.quantity }}</div>
+                <div class="cart_mini__qty increase" onclick="Shopify.addItem({{ item.variant.id }}, this.parentNode.querySelector('input[type=number]').value)">+</div>
+              </div>
+              
+              <script>
+                Shopify.changeItem = async function(id,quantity){
+                  await $.ajax({
+                    method:'POST',
+                    url:'/cart/change.js',
+                    data:{ id:id, quantity:quantity },
+                    dataType: 'json'
+                  })
+                };
+                Shopify.addItem = async function(id,quantity){
+                  await $.ajax({
+                    method:'POST',
+                    url:'/cart/change.js',
+                    data:{ id:id, quantity:(++quantity) },
+                    dataType: 'json'
+                  })
+                };
+              </script>
+              
+              </div>
+                
+              {%- if item_has_discounts -%}
+                <ul class="cart-mini-item-discounts">
+                  {% for discount_allocation in item.line_level_discount_allocations %}
+                    <li>
+                      {% render 'icon' with 'sale-tag' %}
+                      {{ discount_allocation.discount_application.title }}
+                      (-<span class="money">{{ discount_allocation.amount | money }}</span>)
+                    </li>
+                  {% endfor %}
+                </ul>
+              {%- endif -%}
+
+              <div class="cart-mini-item-details-footer">
+                <div class="cart-mini-item-prices">
+                  {%- if item_has_discounts -%}
+                    <s class="cart-mini-item-original-price cart-mini-item-price money"><div class="pn-total-line-item" data-id="{{ item.key }}">{{ item.original_line_price | money }}</div></s>
+                  {%- endif -%}
+
+                  {% if item.unit_price_measurement %}
+                    {% capture total_quantity %}<span>{{ item.unit_price_measurement.quantity_value }}{{ item.unit_price_measurement.quantity_unit }}</span>{% endcapture %}
+                    {% capture unit_price %}<span>{{ item.unit_price | money }}</span>{% endcapture %}
+                    {% capture unit_measure %}<span>{%- if item.unit_price_measurement.reference_value != 1 -%}{{ item.unit_price_measurement.reference_value }}{%- endif -%}{{ item.unit_price_measurement.reference_unit }}</span>{% endcapture %}
+
+                    <div class="cart-mini-item__unit-price">
+                      {{ 'products.product.price_per_unit_html' | t: total_quantity: total_quantity, unit_price: unit_price, unit_measure: unit_measure | strip_newlines }}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="cart-mini-empty">
+        {{ 'cart.empty' | t }}
+      </div>
+    {% endif %}
+  </div>
+  {% if cart.item_count > 0 %}
+  <div class="upsells-cst-title">
+  Pet Owner Frequently Add
+  </div>
+  {% endif %}
+  <div class="cart-mini-footer" data-cart-mini-footer>
+    {% if cart.item_count > 0 %}
+      {%- if cart.cart_level_discount_applications.size > 0 -%}
+        <ul class="cart-mini-discounts" data-cart-discounts>
+          {% render 'cart-discounts' %}
+        </ul>
+      {%- endif -%}
+      <div class="cart-mini-subtotal">
+        <span class="cart-mini-subtotal-heading ff__thic-extra-bold">{{ 'layout.mini_cart.subtotal' | t }}</span>
+        <span class="cart-mini-subtotal-value money ff__thic-extra-bold money--last">{{ cart.total_price | money }}</span>
+      </div>
+
+    {% assign total_saving = 0 %}
+    {% for item in cart.items %}
+      {% if item.variant.compare_at_price > item.variant.price %}
+      	{% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+      	{% assign total_saving = saving | plus: total_saving %}
+      {% endif %}
+    {% endfor %}
+    
+      <div class="cart-mini-savings">
+        <span class="cart-mini-saving-heading ff__thic-extra-bold">You’re Saving</span>
+        <span class="cart-mini-saving-value ff__thic-extra-bold accent__green">{{ total_saving | money }}</span>
+      </div>
+    
+      <div class="cart-mini-shipping">
+        <span class="cart-mini-shipping-heading ff__thic-extra-bold">Shipping</span>
+        <span class="cart-mini-shipping-value">Free</span>
+      </div>
+
+      <div class="cart-mini-actions">
+        {% if settings.ajax_cart_button %}
+        <a class="cart-mini-actions-cart action-button desaturated" href="{{ routes.cart_url }}">
+          {{ 'layout.mini_cart.view_cart' | t }}
+        </a>
+        {% endif %}
+        <form class="cart-mini-actions__checkout" action="{{ routes.cart_url }}" method="POST" {% if settings.ajax_cart_button == false %}style="width: 100%"{% endif %}>
+          <button class="cart-mini-actions__checkout-button action-button submit-button ff__thic-extra-bold" type="submit" name="checkout">
+            {% if settings.enable_checkout_lock_icon %}
+              {% render 'icon' with 'checkout-lock' %}
+            {% endif %}
+            <span>{{ 'layout.mini_cart.checkout' | t }}</span>
+            <img src="{{ 'arrow.png' | asset_img_url: "master" }}">
+          </button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+  
+  {% if cart.item_count > 0 %}
+
+  <div class="cart-mini-values">
+    {% if settings.ajax_value_image_1 != blank and settings.ajax_value_text_1 != blank  %}
+    <div class="cart-value">
+      <img src="{{ settings.ajax_value_image_1 | img_url: 'master' }}">
+      {{ settings.ajax_value_text_1 }}
+    </div>
+    {% endif %}
+    {% if settings.ajax_value_image_2 != blank and settings.ajax_value_text_2 != blank  %}
+    <div class="cart-value">
+      <img src="{{ settings.ajax_value_image_2 | img_url: 'master' }}">
+      {{ settings.ajax_value_text_2 }}
+    </div>
+    {% endif %}
+    {% if settings.ajax_value_image_3 != blank and settings.ajax_value_text_3 != blank  %}
+    <div class="cart-value">
+      <img src="{{ settings.ajax_value_image_3 | img_url: 'master' }}">
+      {{ settings.ajax_value_text_3 }}
+    </div>
+    {% endif %}
+    {% if settings.ajax_value_image_4 != blank and settings.ajax_value_text_4 != blank  %}
+    <div class="cart-value">
+      <img src="{{ settings.ajax_value_image_4 | img_url: 'master' }}">
+      {{ settings.ajax_value_text_4 }}
+    </div>
+    {% endif %}
+  </div>
+  
+  {% if settings.ajax_payment_1 != blank or settings.ajax_payment_2 != blank or settings.ajax_payment_3 != blank or settings.ajax_payment_4 != blank  %}
+  <div class="cart-mini-payment-icons__container">
+    <div class="cart-mini-payment-icons">
+      <img class="hidden_desktop" src="{{ settings.ajax_reviews_image | img_url: "250x" }}">
+      <img src="{{ settings.ajax_payment_1 | img_url: "master" }}">
+      <img src="{{ settings.ajax_payment_2 | img_url: "master" }}">
+      <img src="{{ settings.ajax_payment_3 | img_url: "master" }}">
+      <img src="{{ settings.ajax_payment_4 | img_url: "master" }}">
+    </div>
+  </div>
+  {% endif %}
+  
+  <div class="cart-mini-reviews__container hidden_mobile">
+    <div class="cart-mini-reviews">
+      <img src="{{ settings.ajax_reviews_image | img_url: "250x" }}">
+    </div>
+  </div>
+  
+  {% endif %}
+  
+</template>
+

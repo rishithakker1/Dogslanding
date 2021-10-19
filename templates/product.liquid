@@ -1,0 +1,102 @@
+{% render 'shogun-products', content: product %}
+{{product.metafields.shogun.above}}
+{% render 'preorder-now-collection-item', product: product %}
+        {% section 'static-product' %}
+
+{% comment %}SECTIONS BELOW THE MAIN PRODUCT FORM - DYNAMIC - METAFIELDS{% endcomment %}
+{% render 'product-dynamic-section__image-text-1' %}
+{% render 'product-dynamic-section__faq' %}
+{% render 'product-dynamic-section__values' %}
+{% render 'product-dynamic-section__image-text-1__mobile' %}
+{% render 'product-dynamic-section__social-proof' %}
+{% comment %}
+{% render 'product-dynamic-section__image-text-3' %}
+{% endcomment %}
+{% render 'product-dynamic-section__image-text-4' %}
+{% render 'product-dynamic-section__compare' %}
+{% render 'product-dynamic-section__ambassadors' %}
+{% render 'product-dynamic-section__additional__faq' %}
+
+{% section 'static__recommended-products' %}
+
+{% comment %}
+{% section 'static-product-recommendations' %}
+{% endcomment %}
+
+{% section 'product-reviews' %}
+{% render 'sticky-add-to-cart' %}
+
+<script>
+  Theme.products["{{ product.id }}"] = {{ product | json }};
+  Theme.products["{{ product.id }}"].firstVariant = {{ product.selected_or_first_available_variant.id | json }};
+</script>
+
+
+{% if product.metafields.loox.num_reviews %}
+<script id="looxSchemaJson" type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "Product",
+	"@id": {{ canonical_url | json }},
+	"aggregateRating": {
+		"@type": "AggregateRating",
+		"ratingValue": "{{ product.metafields.loox.avg_rating }}",
+		"reviewCount": "{{ product.metafields.loox.num_reviews }}"
+	},
+	"name": {{ product.title | json }}
+}
+</script>
+{% endif %}
+
+<script>
+  const order_links = document.querySelectorAll(".product__dynamic-section .action-button.scroll");
+
+  for (const link of order_links) {
+    link.addEventListener("click", clickHandler);
+  }
+
+  function clickHandler(e) {
+    e.preventDefault();
+    const href = this.getAttribute("href");
+    const offsetTop = document.querySelector(href).offsetTop;
+
+    scroll({
+      top: offsetTop,
+      behavior: "smooth"
+    });
+  }
+</script>
+
+	<div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+{{product.metafields.shogun.below}}
+
+
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
