@@ -1,0 +1,142 @@
+<div data-section-id="{{ section.id }}" data-section-type="dynamic-collection">
+  {%- assign productsPerRow = section.settings.products_per_row -%}
+  {%- assign productsLimit = productsPerRow | times: section.settings.rows -%}
+  {%- assign border = section.settings.border -%}
+  {%- assign productsCollection = section.settings.collection -%}
+
+  <section
+    class="
+      featured-collection
+      clearfix
+      content-area
+      custom__product-recommendations
+      custom__featured-collection
+      homepage_paws__class
+      {% if sectionHeading != blank %}has-heading{% endif %}
+      {% if border %}has-border{% endif %}
+    "
+  >
+    
+    {% assign sectionHeading = section.settings.title %}
+      
+      {% if sectionHeading != blank %}
+      <h2 class="heading text__center">
+
+        {% assign highlight_1 = section.settings.highlight_1 %}
+        {% assign highlight_2 = section.settings.highlight_2 %}
+        {% assign highlight_3 = section.settings.highlight_3 %}
+        {% assign custom_heading = sectionHeading | split: " " %}
+
+        {% if sectionHeading != blank and highlight_1 != blank and highlight_2 != blank and highlight_3 != blank %}
+
+        {% for head in custom_heading %}
+          {% if head contains highlight_1 %}
+          	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight_1 | append: "</span>" }}
+          {% elsif head contains highlight_2 %}
+        	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight_2 | append: "</span>" }}
+          {% elsif head contains highlight_3 %}
+        	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight_3 | append: "</span>" }}
+          {% else %}
+          	{{ head }}
+          {% endif %}
+        {% endfor %}
+
+        {% else %}
+        	{{ sectionHeading }}
+        {% endif %}
+
+      </h2>
+      {% endif %}
+
+    {% if productsCollection != blank %}
+      <div class="custom__featured-collection-list-wrap">
+        <div class="product-list custom__featured-collection__init">
+          {% for product in collections[productsCollection].products limit: productsLimit %}
+            {% render 'product-item__custom-recommendations', product: product %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <ul class="product-list row-of-{{ productsPerRow }}">
+        {% for i in (1..productsLimit) %}
+          {%
+            render 'product-item',
+            forloop: forloop,
+            onboarding: true,
+          %}
+        {% endfor %}
+      </ul>
+    {% endif %}
+    
+    {% render 'paws', paws_number: 6 %}
+    
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+	{
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Newsletter"
+    },
+	{
+      "type": "text",
+      "id": "highlight_1",
+      "label": "Highlight 1",
+      "default": "dog"
+    },
+	{
+      "type": "text",
+      "id": "highlight_2",
+      "label": "Highlight 2",
+      "default": "dog"
+    },
+	{
+      "type": "text",
+      "id": "highlight_3",
+      "label": "Highlight 3",
+      "default": "dog"
+    },
+    {
+      "type": "checkbox",
+      "id": "border",
+      "label": "Show border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Rows",
+      "min": 1,
+      "max": 11,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Number of products per row",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "category": "Collection",
+      "name": "Custom Collection"
+    }
+  ]
+}
+
+{% endschema %}

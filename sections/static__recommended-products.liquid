@@ -1,0 +1,46 @@
+{% if section.settings.show_product_recommendations %}
+  {% assign product_limit = 4 %}
+  {% assign image_size = 'medium' %}
+  {% assign altProductCard = settings.alt-product-card %}
+  {% assign custom_collection = section.settings.custom__collection %}
+
+  <div class="content content-area">
+    <section
+      class="custom__product-recommendations"
+      data-html>
+       {% if custom_collection != blank %}
+      	<h2 class="heading text__center">Our comfy <span class="accent__blue">bestsellers:</span></h2>
+        <div class="mobile__product-recommended--wrap">
+          <div class="product-list mobile__product-recommended">
+            {% for product in collections[custom_collection].products limit: product_limit %}
+            	{% render 'product-item__custom-recommendations', product: product, forloop: forloop %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% render 'paws', paws_number: 6 %}
+
+    </section>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Custom recommendations",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "Show recommendations",
+      "default": true
+    },
+	{
+	  "type": "collection",
+	  "id": "custom__collection",
+	  "label": "Pick a collection"
+	}
+  ]
+}
+
+{% endschema %}

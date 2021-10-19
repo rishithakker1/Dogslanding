@@ -1,0 +1,58 @@
+
+<section class="product__dynamic-section product__reviews-section">
+  <div class="content-area">
+    
+    <div class="section__heading">
+      
+      {% if section.settings.heading != blank %}
+      <h2>
+
+        {% assign highlight = section.settings.highlight %}
+        {% assign custom_heading = section.settings.heading | split: " " %}
+
+        {% if section.settings.heading != blank and highlight != blank %}
+
+        {% for head in custom_heading %}
+          {% if head contains highlight %}
+          	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight | append: "</span>" }}
+          {% else %}
+          	{{ head }}
+          {% endif %}
+        {% endfor %}
+
+        {% else %}
+        	{{ section.settings.heading }}
+        {% endif %}
+
+      </h2>
+      {% endif %}
+      
+    </div>
+    
+    <div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+  </div>
+  
+  {% render 'paws', paws_number: 4 %}
+  
+</section>
+
+{% schema %}
+{
+  "name": "Product Review Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+	{
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight Word in heading",
+      "default": "Dogslanding"
+    }
+  ]
+}
+
+{% endschema %}

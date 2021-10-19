@@ -1,0 +1,124 @@
+<div id="shopify-contact-section-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="static-page-contact">
+
+  <div class="contact_section__background--{{ section.id }}">
+  
+  <main class="content content-area">
+    <div class="contact-section__contact-image-wrap">
+      <div class="contact-section__contact">
+        <div class="contact-section__contact-wrap">
+
+          <div class="text__center">
+            <h2 class="heading">
+              <img src="{{ "email_contact.png" | asset_img_url: "20x" }}">
+              Get in <span class="accent__blue">Contact</span>
+            </h2>
+            <p>We are happy to help you in any way possible!</p>
+          </div>
+          {% form 'contact' %}
+          {% if form.errors %}
+          <div class="alert-message error"><span>{{ 'contact.error' | t }}</span></div>
+          {% endif %}
+          {% if form.posted_successfully? %}
+          <div class="alert-message success"><span>{{ 'contact.success' | t }}</span></div>
+          {% else %}
+          <div class="field-wrap author">
+            <label>{{ 'general.name' | t }}</label>
+            <input type="text" placeholder="{{ 'general.name_placeholder' | t }}" value="" name="contact[name]" class="field {% if form.errors contains "author" %}error{% endif %}">
+          </div>
+          <div class="field-wrap email">
+            <label>{{ 'general.email' | t }}</label>
+            <input type="text" placeholder="{{ 'general.email_placeholder' | t }}" value="" name="contact[email]" class="field {% if form.errors contains "email" %}error{% endif %}">
+          </div>
+          <div class="field-wrap body">
+            <label>{{ 'general.message' | t }}</label>
+            <textarea name="contact[body]" class="field {% if form.errors contains "body" %}error{% endif %}"></textarea>
+          </div>
+          <div class="contact__button-wrap text__center">
+            <input type="submit" class="action-button submit-button" value="{{ 'general.submit' | t }}">
+            <img src="{{ "arrow_blue.png" | asset_img_url: "master" }}">
+            <span class="contact_submit__note accent__blue ff__script-regular">We will get back to you<br> As soon as possible :)</span>
+          </div>
+          {% endif %}
+          {% endform %}
+        </div>
+      </div>
+
+      <div class="contact-section__image">
+        <div class="contact__image">
+          {% if section.settings.image != blank %}
+          	{% render 'rimg' img: section.settings.image, alt: heading, size: '1024x1024', lazy: true %}
+          {% else %}
+          	{{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </main>
+  </div>
+</div>
+
+{% if section.settings.background_image != blank or section.settings.background_image_mobile != blank %}
+<style>
+  #shopify-contact-section-{{ section.id }} {
+    position: relative;
+  }
+  
+  .contact_section__background--{{ section.id }}:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  }
+  
+  @media (min-width: 700px){
+    .contact_section__background--{{ section.id }}:before {
+      background: url({{ section.settings.background_image | img_url: "master" }});
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+  
+  @media (max-width: 699px){
+    .contact_section__background--{{ section.id }}:before {
+      background: url({{ section.settings.background_image_mobile | img_url: "master" }});
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      max-height: 525px;
+    }
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Contact Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+	{
+      "type": "image_picker",
+	  "id": "image",
+      "label": "Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image Mobile"
+    }
+  ]
+}
+
+{% endschema %}

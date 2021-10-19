@@ -1,0 +1,339 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="dynamic-image-block"
+  data-section-data
+>
+  {
+    "parallax": false,
+    "fixedHeightMobile": false,
+    "fixedHeightDesktop": false
+  }
+</script>
+
+{%- assign image = section.settings.image -%}
+{%- assign image_mobile = section.settings.image_mobile -%}
+{%- assign heading = section.settings.title -%}
+{%- assign content = section.settings.content -%}
+{%- assign alignment = section.settings.alignment -%}
+
+{%- assign button_1_link = section.settings.button_1_link -%}
+{%- assign button_2_link = section.settings.button_2_link -%}
+{%- assign button_1_text = section.settings.button_1_text -%}
+{%- assign button_2_text = section.settings.button_2_text -%}
+
+{%- assign button_note = section.settings.button_note -%}
+
+{%- assign background_image = section.settings.background_image -%}
+{%- assign background_image_mobile = section.settings.background_image_mobile -%}
+
+{% if heading or image %}
+  {%- capture image_tag -%}
+    {%- if section.settings.image != blank -%}
+      {%
+        render 'rimg'
+        img: image,
+        alt: heading,
+        size: '1024x1024',
+        lazy: true,
+		class: 'hidden_mobile'
+      %}
+    {%- else -%}
+      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture mobile_image -%}
+	{% render 'rimg' img: image_mobile, alt: heading, size: '1024x1024', lazy: true, class: 'hidden_desktop' %}
+  {%- endcapture -%}
+
+  {% assign placeholder_style = 'collection-2' %}
+  {% assign color = settings.accent-colour %}
+  {% assign color_string = 'fill="' | append: color | append: '" xmlns' %}
+  {% capture demo_image %}{%- render 'placeholder_svg_uri', placeholder: placeholder_style, color_string: color_string -%}{% endcapture %}
+
+<div class="custom__image-with-text__background--{{ section.id }}">
+
+  <section
+    class=" 
+      custom__image-with-text
+      custom__image-values-text
+      homepage_paws__class
+      home-section
+      content-area     
+      clearfix
+      picture-block
+      picture-block-{{ alignment }}
+      picture-block--desktop-height-natural
+      picture-block--mobile-height-natural
+      {% if section.settings.margin == 'none' %}
+        picture-block-no-margin
+      {% endif %}
+    "
+  >
+    <div class="picture-block-image">
+      {{ image_tag }}
+      {{ mobile_image }}
+    </div>
+
+    <div class="picture-block-wrapper">
+      <div class="centering-wrapper">
+        <div class="picture-block-content">
+          
+          {% if heading != blank %}
+          <h2 class="heading {% if background_image == blank and background_image_mobile == blank %}no_background{% endif %}">
+            {% assign highlight = section.settings.highlight %}
+            {% assign custom_heading = heading | split: " " %}
+            
+            {% if heading != blank and highlight != blank %}
+            
+            {% for head in custom_heading %}
+              {% if head contains highlight %}
+              	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight | append: "</span>" }}
+              {% else %}
+              	{{ head }}
+              {% endif %}
+            {% endfor %}
+            
+            {% else %}
+            {{ heading }}
+            {% endif %}
+            
+            {% if section.settings.heading_logo %}
+            <img class="heading__logo" src="{{ "logo.png" | asset_img_url: "master" }}">
+            {% endif %}
+            
+          </h2>
+          {% endif %}
+
+          {% if content != blank %}
+          <div class="picture-block-body {% if background_image == blank and background_image_mobile == blank %}no_background{% endif %}">
+            {{ content }}
+          </div>
+          {% endif %}
+          
+          {% if section.blocks.size > 0 %}
+          <div class="image-text__values-container">
+            
+            {% for block in section.blocks %}
+            <div class="image-text__value" {{ block.shopify_attributes }}>
+              {% render 'rimg' img: block.settings.value_image, size: '150x', lazy: true %}
+              <span class="ff__semi-bold">{{ block.settings.value_text }}</span>
+            </div>
+            {% endfor %}
+            
+          </div>
+          {% endif %}
+
+          {% if button_1_link != blank or button_2_link != blank %}
+          <div class="action-buton__wrap">
+            {% if button_1_text != blank %}
+            <div class="image_text__button_wrap">
+              <a href="{{ button_1_link }}" class="action-button wider__button">{{ button_1_text }}</a>
+              {% if button_note != blank %}
+              <img src="{{ "arrow_blue.png" | asset_img_url: "master" }}">
+              <span class="action_button-value--note ff__script-regular">{{ button_note }}</span>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if button_2_text != blank %}
+            <div class="image_text__button_wrap">
+              <a href="{{ button_2_link }}" class="action-button wider__button transparent__button">{{ button_2_text }}</a>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+          
+        </div>
+      </div>
+    </div>
+    
+    {% render 'paws', paws_number: 6 %}
+    
+  </section>
+  
+</div>
+{% endif %}
+
+{% if background_image != blank or background_image_mobile != blank %}
+<style>
+  #shopify-section-{{ section.id }} {
+    position: relative;
+  }
+  
+  .custom__image-with-text__background--{{ section.id }}:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  @media (min-width: 700px){
+    .custom__image-with-text__background--{{ section.id }}:before {
+      background: url({{ background_image | img_url: "master" }});
+      background-position: bottom;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+  
+  @media (max-width: 699px){
+    .custom__image-with-text__background--{{ section.id }}:before {
+      background: url({{ background_image_mobile | img_url: "master" }});
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      max-height: 525px;
+    }
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Custom image/values/text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "margin",
+      "label": "Show spacing",
+      "options": [
+        {
+          "value": "regular",
+          "label": "Regular"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "regular"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image Mobile"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image Mobile"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text"
+    },
+	{
+      "type": "checkbox",
+      "id": "heading_logo",
+      "label": "Enalbe heading logo"
+    },
+	{
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight Word in heading",
+      "default": "Dogslanding"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Say a bit about your brand, a specific product, or promotion.</p>"
+    },
+	{
+      "type": "header",
+      "content": "Buttons"
+    },
+	{
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 Link"
+    },
+	{
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Button 1 Text",
+      "default": "Order Now"
+    },
+	{
+      "type": "text",
+      "id": "button_note",
+      "label": "Button Note",
+      "default": "Available now with bonuses"
+    },
+	{
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 Link"
+    },
+	{
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Button 2 Text",
+      "default": "Check Products"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "value_image",
+          "label": "Value Image"
+        },
+		{
+          "type": "text",
+          "id": "value_text",
+          "label": "Value Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "Custom image/values/text"
+    }
+  ]
+}
+
+{% endschema %}

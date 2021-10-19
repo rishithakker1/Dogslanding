@@ -1,0 +1,186 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="dynamic-image-block"
+  data-section-data>
+  {
+    "parallax": false,
+    "fixedHeightMobile": false,
+    "fixedHeightDesktop": false
+  }
+</script>
+
+{%- assign image = section.settings.image -%}
+{%- assign image_mobile = section.settings.image_mobile -%}
+{%- assign heading = section.settings.title -%}
+{%- assign content = section.settings.content -%}
+
+{%- assign background_image = section.settings.background_image -%}
+{%- assign background_image_mobile = section.settings.background_image_mobile -%}
+
+  {%- capture image_tag -%}
+    {%- if section.settings.image != blank -%}
+      {%
+        render 'rimg'
+        img: image,
+        alt: heading,
+        size: '1024x1024',
+        lazy: true,
+		class: 'hidden_mobile'
+      %}
+    {%- else -%}
+      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture mobile_image -%}
+	{% render 'rimg' img: image_mobile, alt: heading, size: '1024x1024', lazy: true, class: 'hidden_desktop' %}
+  {%- endcapture -%}
+
+  {% assign placeholder_style = 'collection-2' %}
+  {% assign color = settings.accent-colour %}
+  {% assign color_string = 'fill="' | append: color | append: '" xmlns' %}
+  {% capture demo_image %}{%- render 'placeholder_svg_uri', placeholder: placeholder_style, color_string: color_string -%}{% endcapture %}
+
+<div class="custom__image-with-text__background--{{ section.id }}">
+
+  <section
+    class=" 
+      content-area     
+      about-us__page
+      clearfix
+    "
+  >
+    <div class="picture-graph__about-us">
+      {{ image_tag }}
+      {{ mobile_image }}
+    </div>
+
+    <div class="picture-graph__content">
+      {% if heading != blank %}
+      <h2 class="heading no_background">
+        Inspired by <span class="accent__blue">Dogs</span> for <span class="accent__blue">Dogs</span>
+      </h2>
+      {% endif %}
+
+      {% if content != blank %}
+      <div class="picture-block-body no_background">
+        {{ content }}
+      </div>
+      {% endif %}
+    </div>
+    
+  </section>
+  
+</div>
+
+{% if background_image != blank or background_image_mobile != blank %}
+<style>
+  #shopify-section-{{ section.id }} {
+    position: relative;
+  }
+  
+  .custom__image-with-text__background--{{ section.id }}:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  }
+  
+  @media (min-width: 700px){
+    .custom__image-with-text__background--{{ section.id }}:before {
+      background: url({{ background_image | img_url: "master" }});
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      top: -100px;
+      min-height: 750px;
+    }
+  }
+  
+  @media (min-width: 700px) and (max-width: 1024px) {
+  .custom__image-with-text__background--{{ section.id }}:before {
+      top: -200px;
+    }
+  }
+  
+  @media (max-width: 699px){
+    .custom__image-with-text__background--{{ section.id }}:before {
+      background: url({{ background_image_mobile | img_url: "master" }});
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      top: -70px;
+      min-height: 900px;
+    }
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "About Us -- Section 4",
+  "settings": [
+    {
+      "type": "select",
+      "id": "margin",
+      "label": "Show spacing",
+      "options": [
+        {
+          "value": "regular",
+          "label": "Regular"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "regular"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image Mobile"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image Mobile"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+	{
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Text",
+      "default": "<p>Say a bit about your brand, a specific product, or promotion.</p>"
+    }
+  ]
+}
+
+{% endschema %}

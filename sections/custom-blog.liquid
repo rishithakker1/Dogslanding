@@ -1,0 +1,134 @@
+<div data-section-id="{{ section.id }}" data-section-type="featured-blog" class="hidden_mobile">
+
+  {%- assign sectionHeading = section.settings.title | escape -%}
+  {%- assign border = section.settings.border -%}
+  {%- assign featuredBlog = section.settings.blog -%}
+
+  <section class="home-section content-area featured-blog__section homepage_paws__class
+    {% if sectionHeading != blank %}has-heading{% endif %}
+    {% if border %}has-border{% endif %}">
+
+    {% if sectionHeading != blank %}
+    <h2 class="heading text__center">
+      
+      {% assign highlight = section.settings.highlight %}
+      {% assign custom_heading = sectionHeading | split: " " %}
+
+      {% if sectionHeading != blank and highlight != blank %}
+
+      {% for head in custom_heading %}
+        {% if head contains highlight %}
+        	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight | append: "</span>" }}
+        {% else %}
+        	{{ head }}
+        {% endif %}
+      {% endfor %}
+
+      {% else %}
+      	{{ sectionHeading }}
+      {% endif %}
+
+    </h2>
+    {% endif %}
+
+    <ul class="articles">
+      {% if featuredBlog != "" %}
+        {% for article in blogs[featuredBlog].articles limit: 4 %}
+          <li class="article {% render 'for-looper', forloop: forloop %} article--{{ blogs[featuredBlog].articles | size }}">
+            <div class="rte content">
+              {% if article.image %}
+                <a href="{{ article.url }}" class="article-image image-wrap">
+                  {%
+                    render 'rimg'
+                    img: article.image,
+                    alt: article.title,
+                    size: '600x600',
+                    lazy: true
+                  %}
+                </a>
+              {% endif %}
+
+              <a class="title" href="{{ article.url }}">{{ article.title }}</a>
+              
+              {{ article.excerpt_or_content }}
+              
+              <div class="action-buton__wrap">
+                <a href="{{ article.url }}" class="action-button wider__button transparent__button">READ MORE</a>
+                <a class="date" href="{{ article.url }}">{{ article.published_at | date: "%m/%d/%Y" }}</a>
+              </div>
+              
+            </div>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..4) %}
+          <li class="article {% render 'for-looper', forloop: forloop %}">
+            <a class="date" href="#">{{'now' | date: "%s" | date: "%B %d, %Y"}}</a>
+            <a class="title" href="#">{{ 'onboarding.blog_title' | t }}</a>
+
+            <div class="rte content">
+              <a href="#" class="article-image image-wrap">
+                {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg' }}
+              </a>
+
+              {{ 'onboarding.blog_excerpt' | t }}
+            </div>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+    
+    <div class="action-buton__wrap text__center blog__see-all">
+      <a href="{{ blogs[featuredBlog].url }}" class="action-button wider__button">SEE ALL</a>
+    </div>
+    
+     {% render 'paws', paws_number: 6 %}
+    
+  </section>
+
+</div>
+
+{% schema %}
+{
+  "name": "Custom Blog posts",
+  "settings": [
+	{
+      "type": "header",
+      "content": "**This section is hidden on mobile devices"
+    },
+	{
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+	{
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight Word in heading",
+      "default": "Dogslanding"
+    },
+    {
+      "type": "checkbox",
+      "id": "border",
+      "label": "Show border",
+      "default": true
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog posts"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Blog",
+      "name": "Custom Blog posts",
+      "settings": {
+        "border":false,
+        "blog": ""
+      }
+    }
+  ]
+}
+
+{% endschema %}

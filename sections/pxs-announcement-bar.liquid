@@ -1,0 +1,131 @@
+<script
+  type="application/json"
+  data-section-type="pxs-announcement-bar"
+  data-section-id="{{ section.id }}"
+></script>
+
+{% assign enable_announcement = section.settings.show_announcement %}
+{% assign homepage_only = section.settings.announcement_home_only %}
+{% assign show_announcement = false %}
+
+{% if enable_announcement and homepage_only == false %}
+  {% assign show_announcement = true %}
+{% endif %}
+
+{% if enable_announcement and homepage_only and template.name == 'index' %}
+  {% assign show_announcement = true %}
+{% endif %}
+
+{% unless show_announcement %}
+  {% break %}
+{% endunless %}
+
+<div class="pxs-announcement-bar ff__semi-bold"
+     style="color: {{ section.settings.announcement_color }};
+            background: linear-gradient(90deg, rgba(255,150,0,1) 0%, rgba(255,178,3,1) 50%, rgba(255,200,6,1) 100%);">
+
+  <div class="content-area__announcement">
+    <div class="announcement-content-wrap">
+
+      <div class="pxs-anouncement-left hidden_mobile">
+        <span>Better than human’s bed</span>
+      </div>
+
+      <div class="pxs-anouncement-center">
+        {% comment %}
+        {% if section.settings.announcement_text_mobile != blank %}
+        <span class="pxs-announcement-bar-text-mobile">
+          {{ section.settings.announcement_text_mobile | escape }}
+        </span>
+        {% endif %}
+
+        {
+        "id": "announcement_text",
+        "type": "textarea",
+        "label": "Text",
+        "default": "Call attention to a special discount, feature, or promotion here."
+        },
+        {
+        "id": "announcement_text_mobile",
+        "type": "textarea",
+        "label": "Text (mobile)",
+        "default": "Use less text on mobile!",
+        "info": "Use this option if you want to display alternate text in mobile. Recommended for shortening announcement text to make suitable for mobile."
+        },
+
+        IN CASE THERE IS A NEED FOR STATIC TEXT ADD THE ABOVE TO SCHEMA BELOW AND REMOVE BLOCKS
+
+        {% if section.settings.announcement_text != blank %}
+        <span class="pxs-announcement-bar-text-desktop">
+          {{ section.settings.announcement_text | escape }}
+        </span>
+        {% endif %}
+        {% endcomment %}
+
+        <div class="pxs-announcement-slider-wrap">
+          <div class="pxs-announcement-slider-init">
+            {% if section.blocks.size > 0 %}
+              {% for block in section.blocks %}
+              <div class="pxs-announcement-slider-block" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.announcement_slide }}</span>
+              </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pxs-anouncement-right hidden_mobile">
+        {% if settings.instagram-url.size > 0 %}<a href="{{ settings.instagram-url | escape }}" class="social-link instagram" target="_blank">{% render 'icon' with 'instagram' %}</a>{% endif %}
+        {% if settings.facebook-url.size > 0 %}<a href="{{ settings.facebook-url | escape }}" class="social-link facebook" target="_blank">{% render 'icon' with 'facebook' %}</a>{% endif %}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": false
+    },
+	{
+      "type": "checkbox",
+      "id": "announcement_home_only",
+      "label": "Show on home page only",
+      "default": false
+    },
+    {
+      "id": "announcement_color",
+      "type": "color",
+      "label": "Text color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "anouncement",
+      "name": "Anouncement Slide",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "announcement_slide",
+          "label": "Announcement Slide",
+          "default": "Want to know anything else?"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

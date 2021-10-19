@@ -1,0 +1,190 @@
+{%- assign footerMessage = section.settings.footer-message -%}
+{%- assign paymentOptions = section.settings.footer-payment-options -%}
+{%- assign mailingList = section.settings.footer-mailing-list -%}
+
+{% comment %}
+{%- assign alternateFooter = section.settings.footer-alternate -%}
+{% endcomment %}
+
+{%- assign alternateFooterMenu = section.settings.footer-secondary-menu -%}
+{%- assign currency_selector = section.settings.show_currency_selector -%}
+{%- assign locale_selector = section.settings.show_locale_selector -%}
+
+<script
+  type="application/json"
+  data-section-type="static-footer"
+  data-section-id="{{ section.id }}"
+>
+</script>
+
+<div class="static-footer">
+
+  {% if section.settings.footer_layout == "custom" %}
+  
+    {%
+      render 'footer-custom',
+      footerMessage: footerMessage,
+      paymentOptions: paymentOptions,
+      currency_selector: currency_selector,
+      locale_selector: locale_selector
+    %}
+  
+  {% elsif section.settings.footer_layout == "alternate" %}
+  
+  	{%
+      render 'footer-two',
+      alternateFooterMenu: alternateFooterMenu,
+      footerMessage: footerMessage,
+      mailingList: mailingList,
+      paymentOptions: paymentOptions,
+      currency_selector: currency_selector,
+      locale_selector: locale_selector
+    %}
+  
+  {% else %}
+  
+  	{%
+      render 'footer-one',
+      footerMessage: footerMessage,
+      mailingList: mailingList,
+      paymentOptions: paymentOptions,
+      currency_selector: currency_selector,
+      locale_selector: locale_selector
+    %}
+  
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "footer-message-title",
+      "label": "Footer message heading"
+    },
+    {
+      "type": "richtext",
+      "id": "footer-message",
+      "label": "Footer message"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer-mailing-list",
+      "label": "Show newsletter form",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "footer-payment-options",
+      "label": "Show payment icons"
+    },
+    {
+      "type": "header",
+      "content": "Footer Layout"
+    },
+    {
+      "type": "select",
+      "id": "footer_layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "custom",
+          "label": "Custom"
+        },
+		{
+          "value": "alternate",
+          "label": "Alternate"
+        },
+        {
+          "value": "default",
+          "label": "Default"
+        }
+      ]
+    },
+	{
+      "type": "header",
+      "content": "Custom Layout"
+    },
+	{
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer Logo"
+    },
+	{
+      "type": "image_picker",
+      "id": "footer_background",
+      "label": "Footer Background"
+    },
+	{
+      "type": "html",
+      "id": "company_info",
+      "label": "Company Info"
+    },
+	{
+      "type": "header",
+      "content": "Alternate Layout"
+    },
+    {
+      "type": "link_list",
+      "id": "footer-secondary-menu",
+      "label": "Secondary footer menu",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "header",
+      "content": "Language Selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Currency Selector",
+      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    }
+  ],
+  "max_blocks": 4,
+	"blocks": [
+	  {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Select Navigation"
+          }
+        ]
+      },
+	  {
+        "type": "text",
+        "name": "Text Block",
+        "settings": [
+          {
+            "type": "html",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+	]
+}
+
+{% endschema %}

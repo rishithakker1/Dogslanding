@@ -1,0 +1,180 @@
+<div data-section-id="{{ section.id }}" data-section-type="logo-list">
+
+  {%- assign sectionHeading = section.settings.title | escape -%}
+  {%- assign border = section.settings.border -%}
+  {%- assign logosPerRow = section.settings.logos_per_row -%}
+
+  <section class="home-section
+                  custom-logo-list
+                  homepage_paws__class
+                  logo-list
+                  clearfix
+                  rows-of-{{ logosPerRow }}
+                  content-area
+                  {% if sectionHeading != blank %}has-heading{% endif %}
+                  {% if border %}has-border{% endif %}">
+    
+    {% if sectionHeading != blank %}
+    <h2 class="heading text__center">
+      
+      {% assign highlight = section.settings.highlight %}
+      {% assign custom_heading = sectionHeading | split: " " %}
+
+      {% if sectionHeading != blank and highlight != blank %}
+
+      {% for head in custom_heading %}
+        {% if head contains highlight %}
+        	{{ head | replace: head, "<span class='accent__blue'>" | append: highlight | append: "</span>" }}
+        {% else %}
+        	{{ head }}
+        {% endif %}
+      {% endfor %}
+
+      {% else %}
+      	{{ sectionHeading }}
+      {% endif %}
+
+    </h2>
+    {% endif %}
+
+    <div class="logo-list-container">
+      <div class="logo-list-mobile__init">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {%- assign link = block.settings.link -%}
+          {%- assign logo = block.settings.logo -%}
+      	  {%- assign title = block.settings.title -%}
+		  {%- assign text = block.settings.text -%}
+
+          {% if logo %}
+            <div class="logo-list-item">
+              <div class="logo-list-item-wrap">
+                {% if link %}
+                  <a href="{{ link | escape }}" target="_blank">
+                    {%
+                      render 'rimg'
+                      img: logo,
+                      size: '240x240',
+                      lazy: true
+                    %}
+                  </a>
+                {% else %}
+                  {%
+                    render 'rimg'
+                    img: logo,
+                    size: '240x240',
+                    lazy: true
+                  %}
+                {% endif %}
+                {% if title %}
+                <div class="logo-list__title ff__thic-extra-bold">
+                  {{ title }}
+                </div>
+                {% endif %}
+                {% if text %}
+                <div class="logo-list__text">
+                  {{ text }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          {% else %}
+            {% render 'logo-list-onboarding' %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% for i in (1..logosPerRow) %}
+          {% render 'logo-list-onboarding' %}
+        {% endfor %}
+      {% endif %}
+      </div>
+    </div>
+    
+    {% render 'paws', paws_number: 8 %}
+
+  </section>
+
+</div>
+
+{% schema %}
+{
+  "name": "Custom Logo list",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Logo list"
+    },
+	{
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight Word in heading",
+      "default": "Dogslanding"
+    },
+    {
+      "type": "checkbox",
+      "id": "border",
+      "label": "Show border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "logos_per_row",
+      "label": "Logos per row",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Image",
+          "info": "480 x 480px .jpg recommended"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+		{
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Image",
+      "name": "Custom Logo list",
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

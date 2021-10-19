@@ -1,0 +1,164 @@
+<div class="homepage_reviews__id" data-section-id="{{ section.id }}">
+
+  <section class="clearfix home-section custom_homepage__reviews__section">
+    
+    {% assign heading = section.settings.title %}
+    
+    {% if heading != blank %}
+    <h2 class="heading text__center">
+      
+      {% assign highlight = section.settings.highlight %}
+      {% assign custom_heading = heading | split: " " %}
+
+      {% if heading != blank and highlight != blank %}
+
+      {% for head in custom_heading %}
+        {% if head contains highlight %}
+        	{{ head | replace: head, "<span class='accent__yellow'>" | append: highlight | append: "</span>" }}
+        {% else %}
+        	{{ head }}
+        {% endif %}
+      {% endfor %}
+
+      {% else %}
+      	{{ heading }}
+      {% endif %}
+
+    </h2>
+    {% endif %}
+    
+    <div class="custom_homepage__reviews-section-wrap">
+      <div class="custom_homepage_reviews-init">
+        {% for block in section.blocks %}
+        <div class="custom_homepage_review-single" {{ block.shopify_attributes }}>
+          <div class="review__image">
+            {% if block.settings.image != blank %}
+              {% render 'rimg', img: block.settings.image, size: '300x', class: "review_feedback-image" %}
+            {% else %}
+             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <img class="review_verified" src="{{ "verified.png" | asset_img_url: "master" }}">
+          </div>
+          <div class="review__footer">
+            <div class="review__text">
+              {{ block.settings.review_text }}
+            </div>
+            <div class="review__name">
+              <div>{{ block.settings.name }}</div>
+              <img class="review_stars" src="{{ "stars.png" | asset_img_url: "master" }}">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    {% if section.settings.see_more_link != blank %}
+    <div class="action-buton__wrap text__center">
+      <a href="{{ section.settings.see_more_link }}" class="action-button wider__button">SEE MORE</a>
+    </div>
+    {% endif %}
+    
+  </section>
+</div>
+
+{% if section.settings.background_image != blank and section.settings.background_image_mobile != blank %}
+<style>
+  .custom_homepage__reviews__section::before {
+  	content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+  @media (min-width: 720px) {
+    .custom_homepage__reviews__section::before {
+      background: url({{ section.settings.background_image | img_url: "master" }});
+      background-size: cover;
+      background-repeat: no-repeat;
+      {% if section.settings.see_more_link != blank %}
+      min-height: 725px;
+      {% else %}
+      min-height: 675px;
+      {% endif %}
+    }
+  }
+  @media (max-width: 719px) {
+    .custom_homepage__reviews__section::before {
+      background: url({{ section.settings.background_image_mobile | img_url: "master" }});
+      background-size: cover;
+      background-repeat: no-repeat;
+      min-height: 600px;
+    }
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Custom Reviews",
+  "settings": [
+	{
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text"
+    },
+	{
+      "type": "text",
+      "id": "highlight",
+      "label": "Highlight Word in heading",
+      "default": "Dogslanding"
+    },
+  	{
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image Desktop"
+    },
+	{
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background Image Mobile"
+    },
+	{
+      "type": "url",
+      "id": "see_more_link",
+      "label": "See more link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Block",
+      "settings": [
+		{
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "<p>Such a lovely soft fluffy bed. Was a bit small for both mine as one just stretched out every time she got in, leaving no room for her sister!</p>"
+        },
+		{
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "James R."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Reviews",
+      "name": "Custom Reviews"
+    }
+  ]
+}
+
+{% endschema %}

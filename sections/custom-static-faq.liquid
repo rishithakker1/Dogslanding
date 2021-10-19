@@ -1,0 +1,159 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="static-faq"
+></script>
+
+<main class="content content-area">
+
+  <h1 class="visuallyhidden">Contact Us</h1>
+  
+  <div class="custom-faq-contact__container">
+    
+    <div class="custom__faq-content">
+      
+      {% if section.settings.heading != blank %}
+      <h2 class="heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div class="faq-block">
+            <h3
+              class="faq-heading {% comment %}{% if forloop.index0 == 0 %}active{% endif %}{% endcomment %}"
+              data-faq-toggle
+              {{ block.shopify_attributes }}
+            >
+              <span class="faq-title">
+                {{ block.settings.title | escape }}
+              </span>
+
+              <div class="faq-button">
+                {% render 'icon' with 'plus' %}
+                {% render 'icon' with 'minus' %}
+              </div>
+            </h3>
+
+            <div class="faq-content {% comment %}{% if forloop.index0 == 0 %}active{% endif %}{% endcomment %}">
+              <div class="rte">
+                {{ block.settings.content }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+      
+    </div>
+    
+    <div class="custom__contact-content">
+      {% if section.settings.contact_us_heading != blank %}
+      <h2 class="heading">{{ section.settings.contact_us_heading }}</h2>
+      {% endif %}
+      <div class="contact__right">
+        <h4 class="icon__calendar">
+          <img src="{{ "calendar_contact.png" | asset_img_url: "20x" }}">
+          Available Hours
+        </h4>
+        {% if section.settings.hours != blank %}
+          {{ section.settings.hours }}
+        {% endif %}
+        <h4 class="icon__email">
+          <img src="{{ "email_contact.png" | asset_img_url: "20x" }}">
+          Email Us:
+        </h4>
+        {% if section.settings.email != blank %}
+          {{ section.settings.email }}
+        {% endif %}
+        <h4 class="icon__location">
+          <img src="{{ "location_contact.png" | asset_img_url: "20x" }}">
+          Corporate Location:
+        </h4>
+        {% if section.settings.location != blank %}
+          {{ section.settings.location }}
+        {% endif %}
+      </div>
+    </div>
+    
+  </div>
+</main>
+
+{% schema %}
+{
+  "name": "FAQ Section",
+  "class": "static-section-faq",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "FAQ - Heading"
+    },
+	{
+      "type": "text",
+      "id": "contact_us_heading",
+      "label": "Contact Us - Heading"
+    },
+	{
+      "type": "richtext",
+      "id": "hours",
+      "label": "Hours"
+    },
+	{
+      "type": "richtext",
+      "id": "email",
+      "label": "Email"
+    },
+	{
+      "type": "richtext",
+      "id": "location",
+      "label": "Location"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Want to know anything else?"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Save yourself the time and trouble of writing the same email over and over again by listing your most commonly asked questions and answers here. A dedicated FAQ page should help address the basic needs of your customers, cutting down on customer service emails, increasing conversions, and creating a more satisfying shopping experience!</p>"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "faq",
+        "settings": {
+          "title": "Can I track my order?",
+          "content": "<p>Save yourself the time and trouble of writing the same email over and over again by listing your most commonly asked questions and answers here. A dedicated FAQ page should help address the basic needs of your customers, cutting down on customer service emails, increasing conversions, and creating a more satisfying shopping experience!</p>"
+        }
+      },
+      {
+        "type": "faq",
+        "settings": {
+          "title": "Where do you ship to?",
+          "content": "<p>Save yourself the time and trouble of writing the same email over and over again by listing your most commonly asked questions and answers here. A dedicated FAQ page should help address the basic needs of your customers, cutting down on customer service emails, increasing conversions, and creating a more satisfying shopping experience!</p>"
+        }
+      },
+      {
+        "type": "faq",
+        "settings": {
+          "title": "What are your shipping rates?",
+          "content": "<p>Save yourself the time and trouble of writing the same email over and over again by listing your most commonly asked questions and answers here. A dedicated FAQ page should help address the basic needs of your customers, cutting down on customer service emails, increasing conversions, and creating a more satisfying shopping experience!</p>"
+        }
+      }
+    ]
+  }
+}
+
+{% endschema %}
