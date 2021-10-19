@@ -1,0 +1,105 @@
+{% assign product = product | default: nil %}
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
+{% capture product_card_details %}
+    {% assign itemType = product %}
+    <div class="product-item__price mob-hide">
+      {% if itemType.compare_at_price_min > itemType.price_min %}
+      <span class="original money tab-mob-hide"> {{ itemType.compare_at_price_min | money }}</span> <span class="money money--last ff__thic-extra-bold">{{ itemType.price_min | money }}</span>
+      {% else %}
+      <span class="money money--last ff__thic-extra-bold">{{ itemType.price_min | money }}</span>
+      {% endif %}
+      
+      {% assign variant_for_unit_price = itemType.variants | sort: 'price' | first %}
+      {% if variant_for_unit_price.unit_price_measurement %}
+        {% capture total_quantity %}<span>{{ variant_for_unit_price.unit_price_measurement.quantity_value }}{{ variant_for_unit_price.unit_price_measurement.quantity_unit }}</span>{% endcapture %}
+        {% capture unit_price %}<span>{{ variant_for_unit_price.unit_price | money }}</span>{% endcapture %}
+        {% capture unit_measure %}<span>{%- if variant_for_unit_price.unit_price_measurement.reference_value != 1 -%}{{ variant_for_unit_price.unit_price_measurement.reference_value }}{%- endif -%}{{ variant_for_unit_price.unit_price_measurement.reference_unit }}</span>{% endcapture %}
+    
+        <div class="product-item__unit-price">
+          {{ 'products.product.price_per_unit_html' | t: total_quantity: total_quantity, unit_price: unit_price, unit_measure: unit_measure | strip_newlines }}
+        </div>
+      {% endif %}
+    </div>
+{% endcapture %}
+
+{% capture product_card_interactions %}
+<div class="recommended-product-card-interactions">
+  
+    {% for option in product.options_with_values %}
+    <div class="recommended-options-wrap">
+      <select id="recommended_OptionSelector-{{ forloop.index0 }}" class="recommended_selector--{{ option.name }}">
+        {% for value in option.values %}
+        <option value="{{ value }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% endfor %}
+  
+    <select id="recommended_master-select" data-product-id="{{ product.id }}" style="display:none;">
+      {% for variant in product.variants %}
+        <option value="{{ variant.id }}"
+                data-title="{{ variant.title }}" 
+                {% unless variant.available %}
+                disabled
+                {% endunless %}>
+          {{ variant.title }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <input class="recommended__variant-id" type="hidden" name="id" value="{{ selected_variant.id }}">
+
+    <div class="recommended_quantity_wrap custom__quantity mob-hide">
+      <input type="number" 
+             class="recommended-quantity-input" 
+             name="quantity" 
+             value="1" 
+             min="1" 
+             pattern="\d*">
+    </div>
+</div>
+{% endcapture %}
+
+<div class="sticky-add-to-cart-bottom">
+  <div class="content-area">
+    <form class="recommended__form" action="/cart/add" method="post" data-recommended-form>
+    <div class="sticky-atc-image mob-hide">
+      {% if product.featured_media %}
+      	{% render 'rimg', img: product.featured_media.preview_image, size: '48x48', lazy: true %}
+      {% endif %}
+    </div>
+    <div class="sticky-atc-title-reviews-container mob-hide">
+      <p class="atc-title">
+        {% if product != empty %}
+          {{ product.title }}
+        {% else %}
+          {{ 'onboarding.product_name' | t }}
+        {% endif %}
+      </p>
+      <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+    </div>
+    <div class="sticky-atc-button mob-hide">
+      <button type="submit" class="product-submit action-button submit addtocart-button-active" {% unless selected_variant.available %} disabled {% endunless %} data-ajaxify>
+        {% if selected_variant.available %}
+        	<span>+ add to cart</span>
+        {% else %}
+        	{{ 'products.product_item.sold_out' | t }}
+        {% endif %}
+      </button>
+    </div>
+    {{ product_card_details }}
+    {{ product_card_interactions }}
+    <div class="sticky-atc-button desktop-hide">
+      <button type="submit" class="product-submit action-button submit addtocart-button-active" {% unless selected_variant.available %} disabled {% endunless %} data-ajaxify>
+        {% if selected_variant.available %}
+        	<span>+ add to cart</span>
+        {% else %}
+        	{{ 'products.product_item.sold_out' | t }}
+        {% endif %}
+      </button>
+    </div>
+    </form>
+    
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<footer class="main-footer content-area footer-custom" id="main-footer">
+
+  {% if section.settings.footer_logo != blank %}
+  <div class="logo__footer text__center">
+    {% render 'rimg', img: section.settings.footer_logo , size: '200x', lazy: true %}
+  </div>
+  {% endif %}
+
+  <div class="top__footer">
+  
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'text' %}
+        <ul class="footer__menu-block text_block" {{ block.shopify_attributes }}>
+          <ul class="footer__menu-block text_block">
+            {{ block.settings.text }}
+          </ul>
+        </ul>
+
+        {% when 'menu' %}
+        <ul class="footer__menu-block" {{ block.shopify_attributes }}>
+          <li class="title ff__thic-extra-bold accent__blue">{{ linklists[block.settings.menu].title }}</li>
+          {% for link in linklists[block.settings.menu].links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endcase %}
+    {% endfor %}
+    
+  </div>
+
+  <div class="sub-footer">
+    <div class="sub-footer__copyright text__center hidden_desktop_footer">
+      {% capture year %}{{ "now" | date: "%Y" }}{% endcapture %}
+      <p class="ff__semi-bold">{{ 'layout.footer.copyright_text_html' | t: year: year }}</p>
+    </div>
+    <div class="sub-footer__payment">
+      {% if shop.enabled_payment_types.size > 0 %}
+      <ul class="payment-options">
+        <li class="payment-icon">
+          <img src="{{ "visa.png" | asset_img_url: "master" }}">
+        </li>
+        <li class="payment-icon">
+          <img src="{{ "mastercard.png" | asset_img_url: "master" }}">
+        </li>
+        <li class="payment-icon">
+          <img src="{{ "amex.png" | asset_img_url: "master" }}">
+        </li>
+        <li class="payment-icon">
+          <img src="{{ "paypal.png" | asset_img_url: "master" }}">
+        </li>
+      </ul>
+      {% endif %}
+    </div>
+    <div class="sub-footer__copyright text__center hidden_mobile_footer">
+      {% capture year %}{{ "now" | date: "%Y" }}{% endcapture %}
+      <p class="ff__semi-bold">{{ 'layout.footer.copyright_text_html' | t: year: year }}</p>
+    </div>
+    <div class="sub-footer__social">
+      {% unless settings.twitter-url.size == 0 and
+      settings.facebook-url.size == 0 and
+      settings.pinterest-url.size == 0 and
+      settings.instagram-url.size == 0 and
+      settings.tumblr-url.size == 0 and
+      settings.youtube-url.size == 0 and
+      settings.vimeo-url.size == 0
+      %}
+        {% render 'social-links' %}
+      {% endunless %} 
+    </div>
+  </div>
+
+</footer>
+
+{% if section.settings.footer_background != blank %}
+<style>
+  .static-footer {
+  	position: relative;
+  }
+  .footer-custom:before {
+  	content: "";
+    background: url({{ section.settings.footer_background | img_url: "master" }});
+    background-size: cover;
+    background-position: bottom;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+</style>
+{% endif %}
+
+<style>
+  .footer_address,
+  .footer_email,
+  .footer_phone {
+  	position: relative;
+  }
+  .footer_address:before,
+  .footer_email:before,
+  .footer_phone:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: -25px;
+    top: 5px;
+    z-index: -1;
+  }
+  .footer_address:before {
+  	content: "";
+    background: url({{ "location.png" | asset_img_url: "master" }});
+    background-repeat: no-repeat;
+  }
+  .footer_email:before {
+  	content: "";
+    background: url({{ "email.png" | asset_img_url: "master" }});
+    background-repeat: no-repeat;
+  }
+  .footer_phone:before {
+  	content: "";
+    background: url({{ "phone.png" | asset_img_url: "master" }});
+    background-repeat: no-repeat;
+  }
+</style>

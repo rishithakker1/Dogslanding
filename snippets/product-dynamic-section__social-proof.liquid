@@ -1,0 +1,115 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s4__content_heading = product.metafields.section_4.content_heading %}
+
+{% assign s4__socials = product.metafields.section_4_socials %}
+{% assign s4__socials__size = s4__socials | size %}
+
+<section class="product__dynamic-section social-proof">
+
+  <div class="section__heading">
+    {% if s4__content_heading != blank %}
+    <h2>{{ s4__content_heading }}</h2>
+    {% else %}
+    <h2>Check Our <span class="accent__blue">Happy</span> Customers</h2>
+    {% endif %}
+  </div>
+  
+  <div class="social-proof__container">
+    <div class="social-proof__slider-init">
+      
+      {% if s4__socials != blank %}
+
+        {% for item in (1..s4__socials__size) %}
+
+        {% assign single_social = 'social_content_' | append: item %}
+
+        <div class="social-proof__single text__center">
+          <img class="social-proof__image" src="{{ s4__socials[single_social] | split: "," | first }}">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>{{ s4__socials[single_social] | split: "," | last }}</p>
+        </div>
+
+        {% endfor %}
+
+      {% else %}
+      
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+        <div class="social-proof__single text__center">
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/social-proof-img.jpg?v=1616501547">
+          <img src="{{ 'stars.png' | asset_img_url: "master" }}">
+          <p>Lorem ipsum lorem ipsum</p>
+        </div>
+
+      {% endif %}
+      
+    </div>
+  </div>
+
+  <div class="action-buton__wrap text__center">
+    <a href=".product-area" class="action-button wider__button scroll">Order Now</a>
+  </div>
+  
+  {% render 'paws', paws_number: 9 %}
+  
+</section>
+
+<style>
+  .social-proof__single img {
+    cursor: grab;
+  }
+  @media (min-width: 720px){
+    .social-proof__single .social-proof__image {
+      max-width: 250px;
+      width: 100%;
+      margin: 0 10px;
+      border-radius: 5px;
+    }
+  }
+  @media (max-width: 719px){
+    .social-proof__single img {
+      max-width: 100%;
+    }
+  }
+</style>

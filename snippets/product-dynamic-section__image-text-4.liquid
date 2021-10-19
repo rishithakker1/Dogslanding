@@ -1,0 +1,85 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s6__background_image = product.metafields.section_6.background_image %}
+{% assign s6__background_image_mobile = product.metafields.section_6.background_image_mobile %}
+{% assign s6__content_image = product.metafields.section_6.content_image %}
+{% assign s6__content_heading_1 = product.metafields.section_6.content_heading_1 %}
+{% assign s6__content_heading_2 = product.metafields.section_6.content_heading_2 %}
+{% assign s6__content_text = product.metafields.section_6.content_text %}
+
+<section class="product__dynamic-section image-text__section iwt__4 trust__badge">
+  <div class="section__background">
+    <div class="content-area">
+
+      <div class="content__wrap">
+
+        <div class="dynamic_content__image">
+          {% if s6__content_image != blank %}
+          <img src="{{ s6__content_image }}">
+          {% else %}
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/badge.png?v=1616085892">
+          {% endif %}
+        </div>
+        
+        <div class="dynamic_content__text">
+          {% if s6__content_heading_1 != blank and s6__content_heading_2 != blank and s6__content_text != blank %}
+          <h2 class="heading">{{ s6__content_heading_1 }}</h2>
+          <h2 class="heading">{{ s6__content_heading_2 }}</h2>
+          <p class="white">{{ s6__content_text }}</p>
+          {% else %}
+          <h2 class="heading">You'are Protected by our 30 nights</h2>
+          <h2 class="heading">No-risk 100% Money-back guarantee</h2>
+          <p class="white">We are beyond convinced that you'll not only love the Calming Furnitures Protector (and bonuses), but when your dog will try it, you'll be amazed to see his/her happiness... You'll get your hands on the bonuses in just a few moments, while you are waiting for your dog bed and you'll get them with Zero Risk.</p>
+          {% endif %}
+        </div>
+ 
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  
+  .iwt__4 .section__background {
+    min-height: 250px;
+  }
+  
+  @media (min-width: 720px){
+    .iwt__4 .section__background:before {
+      content: "";
+      {% if s6__background_image != blank %}
+      background: url({{ s6__background_image }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt__4__bg.png?v=1616085851");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      top: -120px;
+      min-height: 400px;
+    }
+  }
+  
+  @media (max-width: 719px){
+    .iwt__4 .section__background:before {
+      content: "";
+      {% if s6__background_image_mobile != blank %}
+      background: url({{ s6__background_image_mobile }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt_4_mobile.jpg?v=1616426958");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 450px;
+    }
+  }
+  
+</style>

@@ -1,0 +1,100 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s3__background_image = product.metafields.section_3.background_image %}
+
+{% assign s3__values = product.metafields.section_3_values %}
+{% assign s3__values__size = s3__values | size | divided_by: 3 %}
+
+<section class="product__dynamic-section logo__section">
+  <div class="section__background">
+
+    <div class="content-area">
+      <div class="content__wrap">
+
+        {% if s3__values != blank %}
+
+          {% for item in (1..s3__values__size) %}
+
+        	{% assign value_heading = "value_heading_" | append: item %}
+        	{% assign value_image = "value_image_" | append: item %}
+	        {% assign value_text = "value_text_" | append: item %}
+        
+            <div class="logo-list-item">
+              <div class="logo-list-item-wrap">
+                <img src="{{ s3__values[value_image] }}">
+                <h3 class="accent__blue">{{ s3__values[value_heading] }}</h3>
+                <p>{{ s3__values[value_text] }}</p>
+              </div>
+            </div>
+        
+          {% endfor %}
+
+        {% else %}
+        
+          <div class="logo-list-item">
+            <div class="logo-list-item-wrap">
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/feather.png?v=1615998221">
+              <h3 class="accent__blue">Super Soft Safe Material</h3>
+              <p>Snuggly sleep surface for Superior Comfort</p>
+            </div>
+          </div>
+          <div class="logo-list-item">
+            <div class="logo-list-item-wrap">
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/feather.png?v=1615998221">
+              <h3 class="accent__blue">Super Soft Safe Material</h3>
+              <p>Snuggly sleep surface for Superior Comfort</p>
+            </div>
+          </div>
+          <div class="logo-list-item">
+            <div class="logo-list-item-wrap">
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/feather.png?v=1615998221">
+              <h3 class="accent__blue">Super Soft Safe Material</h3>
+              <p>Snuggly sleep surface for Superior Comfort</p>
+            </div>
+          </div>
+          <div class="logo-list-item">
+            <div class="logo-list-item-wrap">
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/feather.png?v=1615998221">
+              <h3 class="accent__blue">Super Soft Safe Material</h3>
+              <p>Snuggly sleep surface for Superior Comfort</p>
+            </div>
+          </div>
+          <div class="logo-list-item">
+            <div class="logo-list-item-wrap">
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/feather.png?v=1615998221">
+              <h3 class="accent__blue">Super Soft Safe Material</h3>
+              <p>Snuggly sleep surface for Superior Comfort</p>
+            </div>
+          </div>
+
+        {% endif %}
+        
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+  @media (min-width: 720px) {
+    .logo__section .section__background:before {
+      content: "";
+      {% if s3__background_image != blank %}
+      background: url({{ s3__background_image }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/bg_values.png?v=1615999191");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 350px;
+      bottom: 0;
+      left: 0;
+    }
+  }
+</style>

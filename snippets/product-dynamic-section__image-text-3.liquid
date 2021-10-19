@@ -1,0 +1,104 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s5__background_image = product.metafields.section_5.background_image %}
+{% assign s5__background_image_mobile = product.metafields.section_5.background_image_mobile %}
+{% assign s5__content_image = product.metafields.section_5.content_image %}
+{% assign s5__content_heading = product.metafields.section_5.content_heading %}
+{% assign s5__content_subheading = product.metafields.section_5.content_subheading %}
+{% assign s5__content_text = product.metafields.section_5.content_text %}
+
+<section class="product__dynamic-section image-text__section iwt__3">
+  <div class="section__background">
+    <div class="content-area">
+
+      <div class="section__heading">
+        {% if s5__content_heading != blank and s5__content_subheading != blank %}
+        <h2>{{ s5__content_heading }}</h2>
+        <h4>{{ s5__content_subheading }}</h4>
+        {% else %}
+        <h2>The Ultimate <span class="accent__blue">Comfy</span> Offer</h2>
+        <h4><span class="accent__blue">(Bonus)</span> included in your Pre-Order</h4>
+        {% endif %}
+      </div>
+
+      <div class="content__wrap">
+
+        <div class="dynamic_content__text">
+          
+          <div class="content__max-wrap">
+            {% if s5__content_text != blank %}
+            	{{ s5__content_text }}
+            {% else %}
+              <p><span class="accent__bold">1.</span> Complete Master Guide about "Curing Dog Separation Anxiety" access</p>
+              <span class="accent__blue">($30 VALUE)</span>
+              <p><span class="accent__bold">2.</span> 1 Month of Tips to improve Health and Happiness of your fur friends</p>
+              <span class="accent__blue">($30 VALUE)</span>
+              <p><span class="accent__bold">3.</span> Premium Customized durable Packaging which will keep your Package safe</p>
+              <span class="accent__blue">($10 VALUE)</span>
+              <p><span class="accent__bold">4.</span> Insured and tracked Worldwide Premium Shipping for free</p>
+              <span class="accent__blue">($40 VALUE)</span>
+            {% endif %}
+          </div>
+          
+        </div>
+        
+        <div class="dynamic_content__image">
+          {% if s5__content_image != blank %}
+          <img src="{{ s5__content_image }}">
+          {% else %}
+          <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt__3_img.png?v=1616082386">
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 720px){
+    .iwt__3 .section__background {
+      min-height: 500px;
+      margin-top: 150px;
+    }
+    .iwt__3 .section__background:before {
+      content: "";
+      {% if s5__background_image != blank %}
+      background: url({{ s5__background_image }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt__3__bg.png?v=1616073599");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 750px;
+      top: 0;
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 719px){
+    .iwt__3 .section__background:before {
+      content: "";
+      {% if s5__background_image_mobile != blank %}
+      background: url({{ s5__background_image_mobile }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt_3_mobile.png?v=1616425240");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 750px;
+      top: 0;
+      max-width: 100%;
+    }
+  }
+  
+</style>

@@ -1,0 +1,126 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s8__content_heading = product.metafields.section_8.content_heading %}
+{% assign s8__content_text = product.metafields.section_8.content_text %}
+{% assign s8__background_image = product.metafields.section_8.background_image %}
+{% assign s8__background_image_mobile = product.metafields.section_8.background_image_mobile %}
+
+{% assign s8__image_review = product.metafields.section_8_ir %}
+{% assign s8__image_review_size = s8__image_review | size %}
+
+<section class="product__dynamic-section image-text__section ambassadors">
+  <div class="section__background">
+    <div class="content-area">
+
+      <div class="content__wrap">
+
+        <div class="dynamic_content__text">
+          {% if s8__content_heading != blank %}
+          <h2 class="heading">{{ s8__content_heading }}</h2>
+          {% else %}
+          <h2 class="heading">Our Ambassadors</h2>
+          {% endif %}
+          {% if s8__content_text != blank %}
+          <p class="white">{{ s8__content_text }}</p>
+          {% else %}
+          <p class="white">You can see for yourself how your dogs will fall in love with this furniture protector. It is a must have product for your furry friends. We love it, they love it, you will definitely love it.</p>
+          {% endif %}
+          <div class="action-buton__wrap hidden_mobile">
+            <a href="" class="action-button wider__button">See Reviews</a>
+          </div>
+        </div>
+        
+        <div class="dynamic_content__image">
+          <div class="ambassador__slider">
+            
+            {% if s8__image_review != blank %}
+            
+              {% for item in (1..s8__image_review_size) %}
+
+              {% assign content_review_image = "content_revew_image_" | append: item %}
+
+              <div class="ambassador__single_image">
+                <img src="{{ s8__image_review[content_review_image] | split: "," | first }}">
+                <p class="white">{{ s8__image_review[content_review_image] | split: "," | last }}</p>
+              </div>
+              {% endfor %}
+
+            {% else %}
+
+              <div class="ambassador__single_image">
+                <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/ambassador__image.jpg?v=1616151839">
+                <p class="white">"Review Text 1"</p>
+              </div>
+              <div class="ambassador__single_image">
+                <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/ambassador__image.jpg?v=1616151839">
+                <p class="white">"Review Text 2"</p>
+              </div>
+              <div class="ambassador__single_image">
+                <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/ambassador__image.jpg?v=1616151839">
+                <p class="white">"Review Text 3"</p>
+              </div>
+              <div class="ambassador__single_image">
+                <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/ambassador__image.jpg?v=1616151839">
+                <p class="white">"Review Text 4"</p>
+              </div>
+            
+            {% endif %}
+            
+          </div>
+        </div>
+
+        <div class="action-buton__wrap hidden_desktop">
+          <a href="" class="action-button wider__button">See Reviews</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .ambassadors .section__background {
+    min-height: 300px;
+  }
+
+  @media (min-width: 720px){
+    .ambassadors .section__background:before {
+      content: "";
+      {% if s8__background_image != blank %}
+      background: url({{ s8__background_image }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/ambassadors__bg.png?v=1616150851");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 375px;
+      top: 0;
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 719px){
+    .ambassadors .section__background:before {
+      content: "";
+      {% if s8__background_image_mobile != blank %}
+      background: url({{ s8__background_image_mobile }});
+      {% else %}
+      background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/iwt_4_mobile.jpg?v=1616426958");
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 450px;
+      top: 0;
+      max-width: 100%;
+    }
+  }
+</style>

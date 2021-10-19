@@ -1,0 +1,115 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s2__background_image = product.metafields.section_2.background_image %}
+{% assign s2__content_image = product.metafields.section_2.content_image %}
+{% assign s2__content_heading = product.metafields.section_2.content_heading %}
+
+{% assign s2__faqs = product.metafields.section_2_faq %}
+{% assign s2__faqs__size = s2__faqs | size %}
+
+{% assign s2__faqs_title = product.metafields.section_2_faq_title %}
+
+<section class="product__dynamic-section faq__section">  
+  <div class="content-area">
+    <div class="content__wrap">
+
+      <div class="dynamic_content__text">
+        <div class="content__max-wrap">
+          {% if s2__content_heading != blank %}
+          <h2 class="dark heading hidden_mobile">{{ s2__content_heading }}</h2>
+          {% else %}
+          <h2 class="dark heading hidden_mobile">WHY <span class="accent__blue">Every Dog Owner</span> Needs A Calming Furniture Protector?</h2>
+          {% endif %}
+          
+          <div class="accordions__section">
+            {% if s2__faqs != blank %}
+            
+              {% for item in (1..s2__faqs__size) %}
+            	{% assign content_item_title = "faq_title_" | append: item %}
+                <button class="accordion ff__thic-bold">{{ s2__faqs_title[content_item_title] }}</button>
+                <div class="panel">
+                  {% assign content_item = "faq_" | append: item %}
+                  <p>{{ s2__faqs[content_item] }}</p>
+                </div>
+              {% endfor %}
+            
+            {% else %}
+            
+              {% comment %}PLACEHOLDER FAQs{% endcomment %}
+            
+              <button class="accordion ff__thic-bold">FAQ 1</button>
+              <div class="panel">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+              <button class="accordion ff__thic-bold">FAQ 2</button>
+              <div class="panel">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+              <button class="accordion ff__thic-bold">FAQ 3</button>
+              <div class="panel">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              </div>
+            
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="dynamic_content__image">
+        {% if s2__content_heading != blank %}
+        <h2 class="dark heading hidden_desktop">{{ s2__content_heading }}</h2>
+        {% else %}
+        <h2 class="dark heading hidden_desktop">WHY <span class="accent__blue">Every Dog Owner</span> Needs A Calming Furniture Protector?</h2>
+        {% endif %}
+        {% if s2__content_image != blank %}
+        <img src="{{ s2__content_image }}">
+        {% else %}
+        <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/premium_bolsters.png?v=1615920983">
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
+  
+  {% render 'paws', paws_number: 7 %}
+  
+</section>
+
+<style>
+  @media (max-width: 719px){
+    .faq__section .content-area:before {
+      content: "";
+      {% if s2__background_image != blank %}
+      background: url({{ s2__background_image }});
+      {% else %}
+      background: url(https://cdn.shopify.com/s/files/1/0068/7420/2167/files/faq__background.png?v=1615994585);
+      {% endif %}
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      min-height: 800px;
+      left: 0;
+      top: 0;
+    }
+  }
+</style>
+
+<script>
+  var acc = document.getElementsByClassName("accordion");
+
+  for (var i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+</script>

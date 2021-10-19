@@ -1,0 +1,318 @@
+{% comment %}
+  @param product
+  @param onboarding {Boolean}
+{% endcomment %}
+
+{% assign product = product | default: nil %}
+{% assign enable_product_details_overlay = settings.enable_product_details_overlay %}
+{% assign brandNames = settings.show-brand-names %}
+{% assign media_borders = settings.media_borders %}
+{% assign enableATC = settings.show_atc %}
+{% assign enableQuickshop = settings.enable-quick-shop %}
+{% assign onboarding = onboarding | default: false %}
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
+{% if enable_product_details_overlay %}
+  {% capture cardType %} product-card-alt{% endcapture %}
+{% endif %}
+
+{% capture product_card_details %}
+  <div class="product-card-details">
+    {% if brandNames %}
+      <h3 class="brand">
+        {% if onboarding %}
+          {{ 'onboarding.product_vendor' | t }}
+        {% else %}
+          {{ product.vendor | link_to_vendor }}
+        {% endif %}
+      </h3>
+    {% endif %}
+
+    <h2 class="title">
+      {% if onboarding %}
+        {{ 'onboarding.product_name' | t }}
+      {% else %}
+        <a href="{{ product.url | within: collection }}">
+          {{ product.title }}
+        </a>
+      {% endif %}
+    </h2>
+    {% assign itemType = product %}
+    {% comment %}Inject product-item-price begin{% endcomment %}
+    {% comment %}
+      @param itemType {Product} - Product for the product card
+      @param onboarding {Boolean} - If true, will display onboarding content
+    {% endcomment %}
+
+    {% if product.metafields.description.recommended != blank %}
+    <p class="custom-product-item__description">{{ product.metafields.description.recommended }}</p>
+    {% endif %}
+    
+    <div class="product-item__reviews">
+      <div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+    </div>
+    
+    <div class="product-item__price">
+      {% if onboarding %}
+        <span class="money money--last ff__thic-extra-bold">{{ 'onboarding.product_price' | t }}</span>
+      {% else %}
+        {% if itemType.compare_at_price_min > itemType.price_min %}
+          <span class="money money--last ff__thic-extra-bold">{{ itemType.price_min | money }}</span> <span class="original money"> {{ itemType.compare_at_price_min | money }}</span><span class="percentage__off ff__thic-bold">{{ itemType.compare_at_price_min | minus: itemType.price_min | times: 100 | divided_by: itemType.compare_at_price_min }}% Off</span>
+        {% else %}
+          <span class="money money--last ff__thic-extra-bold">{{ itemType.price_min | money }}</span>
+        {% endif %}
+      {% endif %}
+      {% assign variant_for_unit_price = itemType.variants | sort: 'price' | first %}
+      {% if variant_for_unit_price.unit_price_measurement %}
+        {% capture total_quantity %}<span>{{ variant_for_unit_price.unit_price_measurement.quantity_value }}{{ variant_for_unit_price.unit_price_measurement.quantity_unit }}</span>{% endcapture %}
+        {% capture unit_price %}<span>{{ variant_for_unit_price.unit_price | money }}</span>{% endcapture %}
+        {% capture unit_measure %}<span>{%- if variant_for_unit_price.unit_price_measurement.reference_value != 1 -%}{{ variant_for_unit_price.unit_price_measurement.reference_value }}{%- endif %}{{ variant_for_unit_price.unit_price_measurement.reference_unit }}</span>{% endcapture %}
+    
+        <div class="product-item__unit-price">
+          {{ 'products.product.price_per_unit_html' | t: total_quantity: total_quantity, unit_price: unit_price, unit_measure: unit_measure | strip_newlines }}
+        </div>
+      {% endif %}
+    </div>
+    {% comment %}Inject product-item-price end{% endcomment %}
+
+  </div>
+{% endcapture %}
+
+{% capture product_card_details_overlay %}
+  <div class="product-card-details">
+    {% if brandNames %}
+      <h3 class="brand">
+        {% if onboarding %}
+          {{ 'onboarding.product_vendor' | t }}
+        {% else %}
+          {{ product.vendor }}
+        {% endif %}
+      </h3>
+    {% endif %} 
+    
+    <h2 class="title">
+      {% if onboarding %}
+        {{ 'onboarding.product_name' | t }}
+      {% else %}
+        {{ product.title }}
+      {% endif %}
+    </h2>
+    {% assign itemType = product %}
+    {% comment %}Inject product-item-price begin{% endcomment %}
+    {% comment %}
+      @param itemType {Product} - Product for the product card
+      @param onboarding {Boolean} - If true, will display onboarding content
+    {% endcomment %}
+    
+    <div class="product-item__price">
+      {% if onboarding %}
+        <span class="money money--last">{{ 'onboarding.product_price' | t }}</span>
+      {% else %}
+        {% if itemType.compare_at_price_min > itemType.price_min %}
+          <span class="money money--last">{{ itemType.price_min | money }}</span> <span class="original money"> {{ itemType.compare_at_price_min | money }}</span><span class="percentage__off ff__thic-bold">{{ itemType.compare_at_price_min | minus: itemType.price_min | times: 100 | divided_by: itemType.compare_at_price_min }}% Off</span>
+        {% else %}
+          <span class="money money--last">{{ itemType.price_min | money }}</span>
+        {% endif %}
+      {% endif %}
+      {% assign variant_for_unit_price = itemType.variants | sort: 'price' | first %}
+      {% if variant_for_unit_price.unit_price_measurement %}
+        {% capture total_quantity %}<span>{{ variant_for_unit_price.unit_price_measurement.quantity_value }}{{ variant_for_unit_price.unit_price_measurement.quantity_unit }}</span>{% endcapture %}
+        {% capture unit_price %}<span>{{ variant_for_unit_price.unit_price | money }}</span>{% endcapture %}
+        {% capture unit_measure %}<span>{%- if variant_for_unit_price.unit_price_measurement.reference_value != 1 -%}{{ variant_for_unit_price.unit_price_measurement.reference_value }}{%- endif -%}{{ variant_for_unit_price.unit_price_measurement.reference_unit }}</span>{% endcapture %}
+    
+        <div class="product-item__unit-price">
+          {{ 'products.product.price_per_unit_html' | t: total_quantity: total_quantity, unit_price: unit_price, unit_measure: unit_measure | strip_newlines }}
+        </div>
+      {% endif %}
+    </div>
+    {% comment %}Inject product-item-price end{% endcomment %}
+
+  </div>
+{% endcapture %}
+
+{% capture product_card_interactions %}
+  <div class="product-card-interactions">
+    {% if enableQuickshop %}
+      <button
+        class="product-card-interaction product-card-interaction-quickshop"
+        data-product-card-interaction-quickshop
+        data-product-sha256="{{ product | json | sha256 }}"
+        data-product-url="{{ product.url | within: collection }}"
+        {% if onboarding %}
+          disabled
+        {% endif %}
+      >
+        {{ 'products.product_item.quickshop' | t }}
+      </button>
+    {% endif %}
+
+    {% if enableATC %}
+      <button
+        class="product-card-interaction product-card-interaction-addtocart"
+        {% unless selected_variant.available %}
+          disabled
+        {% endunless %}
+        {% if onboarding %}
+          disabled
+        {% endif %}
+        data-product-card-interaction-addtocart
+        data-product-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        data-cart-redirect="{{ settings.quickshop_enable_cart_redirect | json }}"
+      >
+        <span class="product-card-interaction-addtocart-available">
+          {% if selected_variant.available %}
+            {{ 'products.product_item.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.product_item.sold_out' | t }}
+          {% endif %}
+        </span>
+
+        <span class="product-card-interaction-addtocart-error">
+          {{ 'products.product_item.unavailable' | t }}
+        </span>
+
+        <div class="product-card-interaction-addtocart-spinner">
+          {% render 'icon' with 'spinner' %}
+        </div>
+      </button>
+    {% endif %}
+  </div>
+{% endcapture %}
+
+<div
+  class="
+    product
+    product-{{ product.id }}
+    {% render 'for-looper', forloop: forloop %}
+    {{ cardType }}
+  "
+  data-product-item
+>
+  {% assign productImageSize = 'grande' %}
+
+  <div class="product-inner">
+    <figure class="product-card-figure">
+      
+      {% assign custom_image = false %}
+      
+      {% if product.metafields.image.recommended != blank %}
+      	{% assign custom_image = true %}
+      {% endif %}
+      
+      {% if custom_image == true %}
+      
+      <img class="recommended__custom-image" src="{{ product.metafields.image.recommended | file_img_url: "master" }}">
+      
+      {% else %}
+      
+      {% if product.featured_media %}
+      
+        {%
+          render 'rimg',
+          img: product.featured_media.preview_image,
+          size: '600x',
+          lazy: true,
+        %}
+
+        {% if settings.show_product_secondary_image and product.media.size > 1 %}
+          {% assign second_image = product.media[1].preview_image %}
+          {%
+            render 'rimg',
+            img: second_image,
+            size: '600x',
+            lazy: true,
+          %}
+        {% endif %}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+      {% endif %}
+
+      {% unless onboarding %}
+        <a href="{{ product.url | within: collection }}" class="{% if media_borders %}with-border{% endif %}"></a>
+      {% endunless %}
+
+      <{% if onboarding %}div{% else %}a{% endif %}
+        class="
+          product-card-overlay
+          {%
+            if enableQuickshop == false
+            and enableATC == false
+            and enable_product_details_overlay == false
+          %}product-card-overlay--hide{% endif %}
+        "
+        {% unless onboarding %}href="{{ product.url | within: collection }}"{% endunless %}
+      >
+        <div class="product-card-overlay-content">
+          {% if settings.enable_product_details_overlay %}
+            {{ product_card_details_overlay }}
+          {% else %}
+            {{ product_card_interactions }}
+          {% endif %}
+        </div>
+      </{% if onboarding %}div{% else %}a{% endif %}>
+
+      {% comment %}{% render 'product-badges', itemType: product %}{% endcomment %}
+    </figure>
+
+    <div class="product-card-footer">
+
+      <div class="custom__badges-wrapper">
+        {% if itemType.available %}
+          {% if itemType.compare_at_price_min > itemType.price_min %}
+          <span class="custom__badge-sale ff__thic-bold">SALE</span>
+          {% endif %}
+
+        	{% capture new-tag %}{{ 'products.product.new' | t }}{% endcapture %}
+          {% if product.tags contains new-tag %}
+          <span class="custom__badge-new ff__thic-bold">{{ new-tag }}</span>
+          {% endif %}
+        {% else %}
+        	<span class="custom__badge-soldout ff__thic-bold">{{ 'products.product.sold_out' | t }}</span>
+        {% endif %}
+      </div>
+  
+      {% if settings.enable_product_details_overlay %}
+        {{ product_card_interactions }}
+      {% else %}
+        {{ product_card_details }}
+      {% endif %}
+      
+      <div class="action-buton__wrap text__center">
+        <a href="{{ product.url | within: collection }}" class="action-button wider__button">
+          <img src="{{ 'cart__white.png' | asset_img_url: "master" }}">
+          <span>Shop Now</span>
+        </a>
+      </div>
+      
+    </div>
+
+    <div class="product-card-footer-mobile">
+      
+      <div class="custom__badges-wrapper">
+        {% if itemType.available %}
+          {% if itemType.compare_at_price_min > itemType.price_min %}
+          <span class="custom__badge-sale ff__thic-bold">SALE</span>
+          {% endif %}
+
+        	{% capture new-tag %}{{ 'products.product.new' | t }}{% endcapture %}
+          {% if product.tags contains new-tag %}
+          <span class="custom__badge-new ff__thic-bold">{{ new-tag }}</span>
+          {% endif %}
+        {% else %}
+        	<span class="custom__badge-soldout ff__thic-bold">{{ 'products.product.sold_out' | t }}</span>
+        {% endif %}
+      </div>
+      
+      {{ product_card_details }}
+      
+      <div class="action-buton__wrap text__center">
+        <a href="{{ product.url | within: collection }}" class="action-button wider__button">
+          <img src="{{ 'cart__white.png' | asset_img_url: "master" }}">
+          <span>Shop Now</span>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>

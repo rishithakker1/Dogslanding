@@ -1,0 +1,136 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s9__background_image = product.metafields.section_9.background_image %}
+{% assign s9__content_heading = product.metafields.section_9.content_heading %}
+{% assign s9__content_subheading = product.metafields.section_9.content_subheading %}
+{% assign s9__content_subheading_bottom = product.metafields.section_9.content_subheading_bottom %}
+
+{% assign s9__faqs = product.metafields.section_9_faqs %}
+{% assign s9__faqs_size = s9__faqs | size %}
+
+<section class="product__dynamic-section additional__faq__section">
+  <div class="section__background">
+    <div class="content-area">
+
+      <div class="text__center top__heading">
+        {% if s9__content_heading != blank %}
+        <h2 class="heading dark">{{ s9__content_heading }}</h2>
+        {% else %}
+        <h2 class="heading dark">Still Got Questions?</h2>
+        {% endif %}
+        {% if s9__content_subheading != blank %}
+        <h4 class="heading dark">{{ s9__content_subheading }}</h4>
+        {% else %}
+        <h4 class="heading dark">Here is our <span class="accent__blue"> FAQ!</span></h4>
+        {% endif %}
+      </div>
+
+      <div class="content__wrap">
+        <div class="content__max-wrap">
+          <div class="accordions__section">
+            
+            {% if s9__faqs != blank %}
+            
+              {% for item in (1..s9__faqs_size) %}
+
+              {% assign content_faq = "content_faq_" | append: item %}
+
+              <button class="accordion additional__faq ff__thic-bold">{{ s9__faqs[content_faq] | split: "---" | first }}</button>
+              <div class="panel">
+                <p>{{ s9__faqs[content_faq] | split: "---" | last }}</p>
+              </div>
+
+              {% endfor %}
+
+            {% else %}
+            
+            <button class="accordion additional__faq ff__thic-bold">FAQ 1</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <button class="accordion additional__faq ff__thic-bold">FAQ 2</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <button class="accordion additional__faq ff__thic-bold">FAQ 3</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <button class="accordion additional__faq ff__thic-bold">FAQ 4</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <button class="accordion additional__faq ff__thic-bold">FAQ 5</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+
+            <button class="accordion additional__faq ff__thic-bold">FAQ 6</button>
+            <div class="panel">
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            
+            {% endif %}
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="text__center">
+        {% if s9__content_subheading_bottom != blank %}
+        <h4 class="heading dark">{{ s9__content_subheading_bottom }}</h4>
+        {% else %}
+        <h4 class="heading dark">Still need <span class="accent__blue">help?</span></h4>
+        {% endif %}
+      </div>
+
+      <div class="action-buton__wrap text__center">
+        <a href="/pages/contact-us-faq" class="action-button wider__button">
+          <img class="image-mail" src="{{ "mail.png" | asset_img_url: "master" }}">
+          <span>Contact Us</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .additional__faq__section .section__background:before {
+    content: "";
+    {% if s9__background_image != blank %}
+    background: url({{ s9__background_image }});
+    {% else %}
+    background: url("https://cdn.shopify.com/s/files/1/0068/7420/2167/files/bg__square.jpg?v=1616157610");
+    {% endif %}
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: -2;
+    width: 100%;
+    top: -40px;
+    min-height: 550px;
+  }
+</style>
+
+<script>
+  var acc = document.getElementsByClassName("additional__faq");
+
+  for (var i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+</script>

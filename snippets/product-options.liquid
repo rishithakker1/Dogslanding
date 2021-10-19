@@ -1,0 +1,207 @@
+{% comment %}
+@param form_id {String}
+  Product form ID
+
+@param selected_variant {Product}
+  Selected variant for product page or featured product section
+
+@param style {String}
+  Variant options style. Can be one of: select, radio
+  {% endcomment %}
+
+<select
+  class="no-js-required"
+  name="id"
+  id="product-select-{{ form_id }}"
+  data-variants
+>
+  {% for variant in product.variants %}
+    {% if variant.available %}
+      <option
+        {% if variant.id == selected_variant.id %}
+          selected="selected"
+        {% endif %}
+        value="{{ variant.id }}"
+        data-variant-id="{{ variant.id }}"
+      >
+        {{ variant.title }} - {{ variant.price | money }}
+      </option>
+    {% else %}
+      <option
+        disabled="disabled"
+        value="{{ variant.id }}"
+        data-variant-id="{{ variant.id }}"
+      >
+        {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+      </option>
+    {% endif %}
+  {% endfor %}
+</select>
+
+{% for option in product.options_with_values %}
+  {% if style == 'select' %}
+    {% assign option_index = forloop.index %}
+
+    {%- capture option_id -%}
+      single-option-{{ form_id }}-{{ option_index }}
+    {%- endcapture -%}
+
+    <div class="select-header js-required">
+      <label class="option-name" for="{{ option_id }}">{{ option.name }}:</label>
+    </div>
+
+    <div class="js-required select-wrapper">
+      <span data-selected-option></span>
+
+      <select
+        class="single-option-selector {{ 'option' | append: option_index }}"
+        id="{{ option_id }}"
+        data-product-option="{{ 'option' | append: option_index }}"
+      >
+        {% for value in option.values %}
+          <option
+            value="{{ value | escape }}"
+            {% if option.selected_value == value %}
+              selected="selected"
+            {% endif %}
+          >
+            {{ value }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  {% else %}
+    <div
+      class="
+        option-header
+        js-required
+      "
+    >
+      <span class="option-name" {% if option.name == "Size" %}style="display:inline-block"{% endif %}>Select {{ option.name }}</span>
+
+      {% if section.settings.fitting-guide-link != blank %}
+        {% if option.name == "Size" %}
+        <a class="custom_sizing_section fitting-guide accent__blue" href="{{ pages[section.settings.fitting-guide-link].url }}">
+          <img src="{{ "big-ruler.png" | asset_img_url: "master" }}">
+          <span>Sizing Guide</span>
+      	</a>
+        {% endif %}
+      {% endif %}
+      {% if option.name == "Size" %}
+        <a class="size-guide-cst">
+          <svg viewBox="0 0 512.002 512" crossorigin="Anonymous"><path d="M509.502 104.908L407.097 2.502c-3.337-3.337-8.73-3.337-12.067 0L2.502 395.03c-3.337 3.337-3.337 8.73 0 12.067l102.405 102.405c1.596 1.604 3.772 2.5 6.033 2.5s4.43-.896 6.033-2.5L509.5 116.975c1.604-1.596 2.5-3.772 2.5-6.033s-.894-4.43-2.498-6.034zM110.94 491.402l-90.338-90.338 380.46-380.46L491.4 110.94 110.94 491.4zm298.7-414.605c-14.115 0-25.6 11.486-25.6 25.6s11.486 25.6 25.6 25.6 25.6-11.486 25.6-25.6-11.486-25.6-25.6-25.6zm0 34.135c-4.7 0-8.534-3.832-8.534-8.534s3.823-8.534 8.534-8.534 8.534 3.832 8.534 8.534-3.823 8.534-8.534 8.534z"></path><use xlink:href="#B--inject-1"></use><use xlink:href="#C--inject-1"></use><use xlink:href="#B--inject-1" x="-51.203" y="51.195"></use><use xlink:href="#C--inject-1" x="-51.203" y="51.187"></use><use xlink:href="#B--inject-1" x="-102.405" y="102.39"></use><use xlink:href="#C--inject-1" x="-102.405" y="102.383"></use><path d="M164.643 244.95l12.066-12.07 25.6 25.593-12.066 12.07z"></path><use xlink:href="#C--inject-1" x="-153.608" y="153.595"></use><use xlink:href="#B--inject-1" x="-204.81" y="204.796"></use><use xlink:href="#C--inject-1" x="-204.81" y="204.797"></use><use xlink:href="#B--inject-1" x="-255.993" y="256.01"></use><path d="M36.634 372.976l12.068-12.068 34.135 34.135L70.77 407.11z"></path><defs><path id="B--inject-1" d="M318.253 91.37l12.068-12.068 25.603 25.603-12.068 12.068z"></path><path id="C--inject-1" d="M292.648 116.973l12.068-12.068 34.135 34.135-12.068 12.068z"></path></defs></svg>
+          <span>Size Guide?</span>
+      	</a>
+        {% endif %}
+      
+    </div>
+	{% if option.name contains "Size" %}
+      <div class="size-chart-container">
+        <div class="size-chart-close-overlay"></div>
+        <div class="size-chart-content">
+          <div class="size-chart-header">
+            <h1>{{ product.title | escape }}</h1>
+            <h4>Size Chart</h4>
+          </div>
+          <div class="size-chart">
+            <span class="size-chart-close">&times;</span>
+            
+            {% for option_data in option.values %}
+            	<div class="option-value-size-cst">
+                  <div class="field-size-cst">
+                    {% assign firstTag = option_data %}
+                    {% for option_data in option.values %}
+                    <div class="option-value ">          
+          				<span class="option-value-name {% if option_data == firstTag %}selecteds{% endif %}">{{ option_data }}</span>
+          			</div>
+                    {% endfor %}
+                  </div>
+            
+                {% for variant in product.variants %}
+                  {% assign varient_title = variant.title | split: "/" %}
+                  {% assign vtitle = varient_title[0] | rstrip %}
+
+                  {% if vtitle == option_data %}
+                  	{% if variant.metafields.my_fields.diameter %}
+                    <div class="cst-dynamic-chart-popup">
+                      {% if variant.metafields.my_fields.diameter %}
+                          <div class="dynamic-chart-content"><span>Diameter</span><span class="dynamic-chart-image-container"><img class="dynamic-chart-image" src="{{ section.settings.diameter_image | img_url }}" /></span><span class="dynamic-chart-value">{{ variant.metafields.my_fields.diameter }}</span></div>
+                      {% endif %}
+                      {% if variant.metafields.my_fields.dog_size_image %}
+                          <div class="dynamic-chart-dog-image"><img src="{{ variant.metafields.my_fields.dog_size_image | img_url }}"></div>
+                      {% endif %}
+                      {% if variant.metafields.my_fields.weight %}
+                          <div class="dynamic-chart-content"><span>Weight</span><span class="dynamic-chart-image-container"><img class="dynamic-chart-image" src="{{ section.settings.weight_image | img_url }}" /></span><span class="dynamic-chart-value">{{ variant.metafields.my_fields.weight }}</span></div>
+                      {% endif %}
+                    </div>
+                  	{% endif %}
+                {% endif %}
+                {% endfor %}
+                </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+  	{% endif %}
+
+    <div
+      class="
+        option-values
+        js-required {% if option.name contains "Size" %}option-value-size-cst{% endif %}
+      "
+    >
+      {% assign optionIndex = forloop.index %}
+		{% if option.name contains "Size" %}
+      		<div class="field-size-cst">
+      	{% endif %}
+      {% for value in option.values %}
+        <div class="option-value {% if option.name contains "Color" %}option-value-color{% endif %}">
+          <input
+            class="option-value-input"
+            type="radio"
+            name="{{ option.name | url_encode }}"
+            value="{{ value | escape }}"
+            tabindex="0"
+            aria-label="{{ value | escape }}"
+            {% if option.selected_value == value %}checked{% endif %}
+            data-product-option="{{ 'option' | append: optionIndex }}"
+          >
+          {{ variant.metafields.my_fields.diameter }}
+
+          {% if option.name contains "Color" %}
+          {% assign png_image = value | handle | append: ".png" %}
+            <span class="png_swatch">
+              <img src="{{ png_image | asset_img_url: "master" }}">
+            </span>
+          {% else %}
+          	<span class="option-value-name">{{ value }}</span>
+          {% endif %}
+          
+        </div>
+      {% endfor %}
+		{% if option.name contains "Size" %}
+      </div>
+      	{% endif %}
+      
+      {% if option.name contains "Size" %}
+      
+        {% for variant in product.variants %}
+      	  {% if variant.metafields.my_fields.diameter %}
+          <div class="cst-dynamic-chart {{ variant.title }}">
+            {% if variant.metafields.my_fields.diameter %}
+            	<div class="dynamic-chart-content"><span>Diameter</span><span class="dynamic-chart-image-container"><img class="dynamic-chart-image" src="{{ section.settings.diameter_image | img_url }}" /></span><span class="dynamic-chart-value">{{ variant.metafields.my_fields.diameter }}</span></div>
+            {% endif %}
+            {% if variant.metafields.my_fields.dog_size_image %}
+            	<div class="dynamic-chart-dog-image"><img src="{{ variant.metafields.my_fields.dog_size_image | img_url }}"></div>
+            {% endif %}
+            {% if variant.metafields.my_fields.weight %}
+            	<div class="dynamic-chart-content"><span>Weight</span><span class="dynamic-chart-image-container"><img class="dynamic-chart-image" src="{{ section.settings.weight_image | img_url }}" /></span><span class="dynamic-chart-value">{{ variant.metafields.my_fields.weight }}</span></div>
+            {% endif %}
+          </div>
+      	  {% endif %}
+        {% endfor %}
+      {% endif %}
+      
+    </div>
+  {% endif %}
+{% endfor %}

@@ -1,0 +1,15 @@
+
+<section class="product__dynamic-section product__reviews-section">
+  <div class="content-area">
+    
+    <div class="section__heading hidden_mobile">
+      <h2>Check Out what our <span class="accent__blue">customers</span> say!</h2>
+    </div>
+    
+    <div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+
+  </div>
+  
+  {% render 'paws', paws_number: 4 %}
+  
+</section>

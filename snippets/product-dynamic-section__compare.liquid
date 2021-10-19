@@ -1,0 +1,92 @@
+{% comment %}
+SECTION METAFIELDS
+{% endcomment %}
+
+{% assign s7__content_images = product.metafields.section_7.content_images %}
+{% assign s7__content_heading = product.metafields.section_7.content_heading %}
+{% assign s7__content_subheadings = product.metafields.section_7.content_subheadings %}
+
+{% assign s7__content_text_left = product.metafields.section_7.content_text_left | split: "," %}
+{% assign s7__content_text_right = product.metafields.section_7.content_text_right | split: "," %}
+
+<section class="product__dynamic-section image-text__section compare">
+  <div class="section__background">
+    <div class="content-area">
+
+      <div class="section__heading">
+        {% if s7__content_heading != blank %}
+        <h2>{{ s7__content_heading }}</h2>
+        {% else %}
+        <h2>Let’s <span class="accent__blue">Paws</span> and Compare!</h2>
+        {% endif %}
+      </div>
+
+      <div class="hidden_mobile">
+        <div class="compare__heading">
+          <div class="compare__left">
+            {% if s7__content_subheadings != blank %}
+            <h4 class="heading dark">{{ s7__content_subheadings | split: "," | first }}</h4>
+            {% else %}
+            <h4 class="heading dark"><span class="accent__blue">With</span> Furniture Protector</h4>
+            {% endif %}
+          </div>
+          <div class="compare__right">
+            {% if s7__content_subheadings != blank %}
+            <h4 class="heading dark">{{ s7__content_subheadings | split: "," | last }}</h4>
+            {% else %}
+            <h4 class="heading dark"><span class="accent__red">Without</span> Furniture Protector</h4>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="content__wrap">
+
+        <div class="dynamic_content__text">
+          <div class="content__max-wrap">
+            {% for item in s7__content_text_left %}
+            <div class="compare__point">
+              <img src="{{ 'check.png' | asset_img_url: "master" }}">
+              <p>{{ item }}</p>
+            </div>
+            {% endfor %}
+            <div class="compare__image text__center">
+              {% if s7__content_images != blank %}
+              <img src="{{ s7__content_images | split: "," | first }}">
+              {% else %}
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/compare__1.png?v=1616098193">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="dynamic_content__text">
+          <div class="content__max-wrap">
+            {% for item in s7__content_text_right %}
+            <div class="compare__point">
+              <img src="{{ 'remove.png' | asset_img_url: "master" }}">
+              <p>{{ item }}</p>
+            </div>
+            {% endfor %}
+            <div class="compare__image text__center">
+              {% if s7__content_images != blank %}
+              <img src="{{ s7__content_images | split: "," | last }}">
+              {% else %}
+              <img src="https://cdn.shopify.com/s/files/1/0068/7420/2167/files/compare_img_2.png?v=1616781969">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="action-buton__wrap text__center">
+        <a href=".product-area" class="action-button wider__button scroll">Order Now</a>
+      </div>
+
+    </div>
+  </div>
+  
+  {% render 'paws', paws_number: 5 %}
+  
+</section>
