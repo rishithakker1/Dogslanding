@@ -68,7 +68,7 @@
 
 /* Dynamic Size chart */
 .option-value-size-cst {background-color: #f2fbfd;padding: 15px;border-radius: 5px;box-shadow: 0 2px 3px 0 #ccc;margin-bottom: 30px !important;}
-.option-value-size-cst .option-value-name {font-weight: 700;font-size: 16px;}
+.option-value-size-cst .option-value-name {font-weight: 700;font-size: 18px;}
 .cst-dynamic-chart {width: 100%;display: flex;align-items: center;justify-content: space-between;margin-top: 15px;}
 .dynamic-chart-value {color: #127c95;font-weight: 700;}
 .dynamic-chart-image, .dynamic-chart-dog-image {margin: 0px 8px;}
