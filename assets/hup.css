@@ -103,8 +103,8 @@
 }
 
 /* Upsell */
-.upsells-cst-title {    font-family: THICCCBOI-ExtraBold!important;letter-spacing: .08em;text-transform: uppercase;font-size: 20px;margin-top: 10px;padding-bottom: 10px;border-bottom: 1px solid #e2e2e2;margin-bottom: 15px;}
-
+.upsells-cst-title {    font-family: THICCCBOI-ExtraBold!important;letter-spacing: .08em;text-transform: uppercase;font-size: 20px;margin-top: 20px;padding-bottom: 10px;border-bottom: 1px solid #e2e2e2;margin-bottom: 15px;}
+.cart-mini-items {min-height:220px;}
 
 
 
