@@ -47,7 +47,7 @@
     {%- endcapture -%}
 
     <div class="select-header js-required">
-      <label class="option-name" for="{{ option_id }}">{{ option.name }}:</label>
+      <label class="option-name-dev" for="{{ option_id }}">{{ option.name }}:</label>
     </div>
 
     <div class="js-required select-wrapper">
@@ -77,7 +77,7 @@
         js-required
       "
     >
-      <span class="option-name" {% if option.name == "Size" %}style="display:inline-block"{% endif %}>Select {{ option.name }}</span>
+      <span class="option-name-dev" {% if option.name == "Size" %}style="display:inline-block"{% endif %}>Select {{ option.name }}</span>
 
       {% if section.settings.fitting-guide-link != blank %}
         {% if option.name == "Size" %}
