@@ -563,15 +563,15 @@ $(".option-value-size-cst .option-value").on('click', function (e) {
 });
           
 // Size Chart Popup
-jQuery(document).ready(function () {
-    jQuery(".size-guide-cst").click(function () {
-        jQuery(".size-chart-container").fadeIn();
+$(document).ready(function () {
+    $(".size-guide-cst").click(function () {
+        $(".size-chart-container").fadeIn();
     });
-    jQuery(".size-chart-close").click(function () {
-        jQuery(".size-chart-container").fadeOut();
+    $(".size-chart-close").click(function () {
+        $(".size-chart-container").fadeOut();
     });
-    jQuery(".size-chart-close-overlay").click(function () {
-        jQuery(".size-chart-container").fadeOut();
+    $(".size-chart-close-overlay").click(function () {
+        $(".size-chart-container").fadeOut();
     });
 });
           
