@@ -587,7 +587,7 @@ $(document).ready(function(){
             $( ".dynamic-chart-value" ).each(function() {
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
-              var inches = (weightArr[0]/2.54);
+              var inches = (parseInt(weightArr[0])/2.54);
               alert(inches);
               $( ".dynamic-chart-value" ).text(inches + '"');
             });
