@@ -91,9 +91,6 @@
 .size-chart-content .field-size-cst {margin-bottom: 10px;}
 .size-chart-content .field-size-cst .option-value-name.selecteds { color: #fff;background-color: #ffc806;border-color: #b89000; }
 
-
-
-
 @media (max-width: 900px){
   .dynamic-chart-image, .dynamic-chart-dog-image {margin: 0px 4px;}
   .option-value-size-cst {padding: 6px;font-size: 14px;}
