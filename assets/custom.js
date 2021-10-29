@@ -546,10 +546,10 @@ $('.option-value-input').on('click', function (e) {
 });
 
 // Size Chart
-$( ".option-value-size-cst .option-value" ).each(function( index ) {
-  	var varient_class = $(this).find('.option-value-input').val();
-  	$('.cst-dynamic-chart.'+varient_class).not(':first').remove();
-});
+// $( ".option-value-size-cst .option-value" ).each(function( index ) {
+//   	var varient_class = $(this).find('.option-value-input').val();
+//   	$('.cst-dynamic-chart.'+varient_class).not(':first').remove();
+// });
 
 $(document).ready(function(){      
 	var varient_value = $("input[name='Size']:checked").val();
