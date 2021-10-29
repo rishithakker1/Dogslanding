@@ -579,8 +579,7 @@ $(document).ready(function(){
 	$.get('//www.cloudflare.com/cdn-cgi/trace', function(data) {
       var country_code = data.replace(/(\r\n|\n|\r)/gm,"").split('loc=');
       country_code = country_code[1].split('tls=');
-      country_code = country_code[0];  
-    alert(country_code);
+      country_code = country_code[0];
           
             if(country_code == 'UN'){
             
