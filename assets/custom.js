@@ -600,7 +600,7 @@ $(document).ready(function(){
               inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
 
-              $(this).text(final_inches + ' "');
+              $(this).text(final_inches + ' in');
             });
         }
 	});
