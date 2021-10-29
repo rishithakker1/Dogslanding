@@ -588,7 +588,7 @@ $(document).ready(function(){
               var pounds = 0;
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
-              pounds = (parseInt(weightArr[0])/2.54);
+              pounds = (parseInt(weightArr[0])/0.45359237);
               var final_pounds = parseFloat(pounds.toFixed(1));
               
               $(this).text(final_pounds + ' lbs');
