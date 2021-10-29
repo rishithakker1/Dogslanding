@@ -68,9 +68,9 @@
 
 /* Dynamic Size chart */
 .option-name-dev {display: block;font-size: 12px;font-family: THICCCBOI-Regular!important;color: #888;text-transform: uppercase;}
-.option-value-size-cst {font-size:15px;background-color: #f2fbfd;padding: 15px;border-radius: 5px;box-shadow: 0 2px 3px 0 #ccc;margin-bottom: 30px !important;}
-.option-value-size-cst .option-value-name {font-weight: 700;font-size: 18px;}
-.cst-dynamic-chart {width: 100%;display: flex;align-items: center;justify-content: space-between;margin-top: 15px;}
+.option-value-size-cst {max-width:400px;font-size:15px;background-color: #f2fbfd;padding: 10px;border-radius: 5px;box-shadow: 0 2px 3px 0 #ccc;margin-bottom: 30px !important;}
+.option-value-size-cst .option-value-name {font-weight: 700;font-size: 15px;}
+.cst-dynamic-chart {width: 100%;display: flex;align-items: center;justify-content: space-between;margin-top: 10px;}
 .dynamic-chart-value {color: #127c95;font-weight: 700;}
 .dynamic-chart-image, .dynamic-chart-dog-image {margin: 0px 8px;}
 .dynamic-chart-content {display: flex; align-items: center;}
@@ -84,11 +84,11 @@
 .size-chart-header {background-color: #f2f2f2;padding:25px 20px;text-align: center;}
 .size-chart-header h4 {margin-top: 5px;font-weight: 400;font-family: 'THICCCBOI-Regular' !important;}
 .size-chart-container {z-index: 9999;display: none;position: fixed;left: 0;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgba(0,0,0,0.4);}
-.size-chart-content {max-height: 95%;overflow: auto;margin: auto;background-color: #fff;position: relative;padding: 0;outline: 0;max-width: 490px;width: calc(100% - 20px);top: 50%;transform: translateY(-50%);}
+.size-chart-content {max-height: 95%;overflow: auto;margin: auto;background-color: #fff;position: relative;padding: 0;outline: 0;max-width: 440px;width: calc(100% - 20px);top: 50%;transform: translateY(-50%);}
 .size-chart {padding: 30px 20px 1px;}
 .size-chart-close {position: absolute;right: 0;top: 0;font-size: 40px;font-weight: 500;padding: 8px 10px;cursor: pointer;line-height: 24px;}
 .size-chart-close-overlay {width: 100%;height: 100%;position: absolute;}
-.size-chart-content .field-size-cst {margin-bottom: 20px;}
+.size-chart-content .field-size-cst {margin-bottom: 10px;}
 .size-chart-content .field-size-cst .option-value-name.selecteds { color: #fff;background-color: #ffc806;border-color: #b89000; }
 
 
