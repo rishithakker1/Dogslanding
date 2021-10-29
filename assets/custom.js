@@ -583,14 +583,23 @@ $(document).ready(function(){
     
           
           if(country_code == 'IN'){
-            $( ".dynamic-chart-value" ).each(function() {
+            $( ".dynamic-chart-value.diameter" ).each(function() {
               var inches = 0;
-              var weight =$( this ).text();
-              var weightArr = weight.split(' ');
-              inches = (parseInt(weightArr[0])/2.54);
+              var diameter =$( this ).text();
+              var diameterArr = weight.split(' ');
+              inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
               
               $(this).text(final_inches + '"');
+            });
+          	$( ".dynamic-chart-value.weight" ).each(function() {
+              var pounds = 0;
+              var weight =$( this ).text();
+              var weightArr = weight.split(' ');
+              inches = (parseInt(weightArr[0])/2.54);
+              var final_pounds = parseFloat(pounds.toFixed(1));
+              
+              $(this).text(final_pounds + 'pounds');
             });
           }
 	});
