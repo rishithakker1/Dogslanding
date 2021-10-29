@@ -585,7 +585,7 @@ $(document).ready(function(){
           if(country_code == 'IN'){
             $( ".dynamic-chart-value.diameter" ).each(function() {
               var inches = 0;
-              var diameter =$( this ).text();
+              var diameter = $(this).text();
               var diameterArr = inches.split(' ');
               inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
