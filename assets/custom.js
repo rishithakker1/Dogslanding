@@ -591,7 +591,7 @@ $(document).ready(function(){
               pounds = (parseInt(weightArr[0])/2.54);
               var final_pounds = parseFloat(pounds.toFixed(1));
               
-              $(this).text(final_pounds + 'pounds');
+              $(this).text(final_pounds + ' lbs');
             });
             $( ".dynamic-chart-value.diameter" ).each(function() {
               var inches = 0;
@@ -600,7 +600,7 @@ $(document).ready(function(){
               inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
 
-              $(this).text(final_inches + '"');
+              $(this).text(final_inches + ' "');
             });
         }
 	});
