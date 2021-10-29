@@ -585,9 +585,10 @@ $(document).ready(function(){
           if(country_code == 'IN'){
           	var weight = $('.dynamic-chart-value').text();
             $( ".dynamic-chart-value" ).each(function() {
+              var inches = 0;
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
-              var inches = (parseInt(weightArr[0])/2.54);
+              inches = (parseInt(weightArr[0])/2.54);
               alert(inches);
               $( ".dynamic-chart-value" ).text(inches + '"');
             });
