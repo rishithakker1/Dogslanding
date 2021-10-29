@@ -93,7 +93,7 @@
 
 @media (max-width: 900px){
   .dynamic-chart-image, .dynamic-chart-dog-image {margin: 0px 4px;}
-  .option-value-size-cst {padding: 6px;font-size: 14px;}
+  .option-value-size-cst {padding: 6px;font-size: 13px;}
 }
 @media (max-width: 719px){
 	.option-value-size-cst {padding: 10px;font-size: 14px;}
