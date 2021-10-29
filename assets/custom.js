@@ -588,7 +588,7 @@ $(document).ready(function(){
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
               inches = (parseInt(weightArr[0])/2.54);
-              var final_inches = float2int(inches);
+              var final_inches = Math.floor(inches);
               
               $(this).text(final_inches + '"');
             });
