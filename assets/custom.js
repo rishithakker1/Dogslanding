@@ -586,7 +586,7 @@ $(document).ready(function(){
             $( ".dynamic-chart-value.diameter" ).each(function() {
               var inches = 0;
               var diameter =$( this ).text();
-              var diameterArr = weight.split(' ');
+              var diameterArr = inches.split(' ');
               inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
               
@@ -596,7 +596,7 @@ $(document).ready(function(){
               var pounds = 0;
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
-              inches = (parseInt(weightArr[0])/2.54);
+              pounds = (parseInt(weightArr[0])/2.54);
               var final_pounds = parseFloat(pounds.toFixed(1));
               
               $(this).text(final_pounds + 'pounds');
