@@ -587,7 +587,7 @@ $(document).ready(function(){
             $( ".dynamic-chart-value" ).each(function() {
               var weight =$( this ).text();
               var weightArr = weight.split(' ');
-              alert(weightArr);
+              alert(weightArr[0]);
             });
           }
 	});
