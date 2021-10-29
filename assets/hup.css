@@ -96,7 +96,7 @@
   .option-value-size-cst {padding: 6px;font-size: 14px;}
 }
 @media (max-width: 719px){
-	.option-value-size-cst {padding: 10px;font-size: 15px;}
+	.option-value-size-cst {padding: 10px;font-size: 14px;}
   	.size-chart {padding: 30px 10px 1px;}
 }
 
