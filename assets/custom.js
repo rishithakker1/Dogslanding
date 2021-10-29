@@ -582,7 +582,7 @@ $(document).ready(function(){
       country_code = country_code[0];  
     
           
-          if(country_code == 'IN'){
+            if(country_code == 'IN'){
             
           	$( ".dynamic-chart-value.weight" ).each(function() {
               var pounds = 0;
@@ -593,16 +593,16 @@ $(document).ready(function(){
               
               $(this).text(final_pounds + 'pounds');
             });
-          $( ".dynamic-chart-value.diameter" ).each(function() {
+            $( ".dynamic-chart-value.diameter" ).each(function() {
               var inches = 0;
               var diameter = $(this).text();
               var diameterArr = diameter.split(' ');
               inches = (parseInt(diameterArr[0])/2.54);
               var final_inches = parseFloat(inches.toFixed(1));
-              
+
               $(this).text(final_inches + '"');
             });
-          }
+        }
 	});
 });
           
