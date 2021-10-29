@@ -580,7 +580,12 @@ $(document).ready(function(){
       var country_code = data.replace(/(\r\n|\n|\r)/gm,"").split('loc=');
       country_code = country_code[1].split('tls=');
       country_code = country_code[0];  
-    });          
+    });
+          
+          if(country_code == 'UN'){
+          	var weight = $('.dynamic-chart-value').text();
+            alert(weight);
+          }
 });
           
           
