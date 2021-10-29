@@ -581,7 +581,7 @@ $(document).ready(function(){
       country_code = country_code[1].split('tls=');
       country_code = country_code[0];
             
-            if(country_code == 'UN'){
+            if(country_code == 'US'){
             
           	$( ".dynamic-chart-value.weight" ).each(function() {
               var pounds = 0;
