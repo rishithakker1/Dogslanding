@@ -582,7 +582,7 @@ $(document).ready(function(){
       country_code = country_code[0];  
     });
           
-          if(country_code == 'UN'){
+          if(country_code == 'IN'){
           	var weight = $('.dynamic-chart-value').text();
             alert(weight);
           }
